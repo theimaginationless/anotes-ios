@@ -1,24 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="WAA-Dd-wSn">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Main Navigation Controller-->
+        <scene sceneID="a4M-9k-h2i">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="WAA-Dd-wSn" customClass="MainNavigationController" customModule="ANotes" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="VKo-EB-KcL">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4vY-in-1Mn">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="2LG-KC-4QU" kind="relationship" relationship="rootViewController" id="WqD-Wr-MHt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w9l-7O-Unn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="135" y="139"/>
+        </scene>
+        <!--Notes Table View Controller-->
+        <scene sceneID="eoL-jx-1vX">
+            <objects>
+                <tableViewController storyboardIdentifier="NotesTableViewController" id="2LG-KC-4QU" customClass="NotesTableViewController" customModule="ANotes" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" maximumZoomScale="3" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="DTf-bs-NZG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoteTableViewCell" rowHeight="110" id="f7M-Hd-9ZJ" customClass="NoteTableViewCell" customModule="ANotes" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="110"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f7M-Hd-9ZJ" id="AfZ-cm-3AH">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note title" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chd-id-4bd">
+                                            <rect key="frame" x="20" y="8" width="86.5" height="26.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note content" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LWA-wO-2E3">
+                                            <rect key="frame" x="40" y="44.5" width="100" height="21"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mym-Gd-goi">
+                                            <rect key="frame" x="375" y="77" width="19" height="22"/>
+                                            <state key="normal" image="alarm" catalog="system"/>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wednesday at 10:15" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Db8-hV-xHa">
+                                            <rect key="frame" x="253" y="80.5" width="114" height="15"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="chd-id-4bd" firstAttribute="leading" secondItem="AfZ-cm-3AH" secondAttribute="leading" constant="20" id="5uD-uS-h60"/>
+                                        <constraint firstItem="mym-Gd-goi" firstAttribute="leading" secondItem="Db8-hV-xHa" secondAttribute="trailing" constant="8" symbolic="YES" id="HF6-bM-d8T"/>
+                                        <constraint firstItem="LWA-wO-2E3" firstAttribute="leading" secondItem="chd-id-4bd" secondAttribute="leading" constant="20" id="Ngj-aE-Dat"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="chd-id-4bd" secondAttribute="trailing" constant="8" id="P5i-6e-kCe"/>
+                                        <constraint firstItem="chd-id-4bd" firstAttribute="top" secondItem="AfZ-cm-3AH" secondAttribute="top" constant="8" id="ZAI-MU-kuh"/>
+                                        <constraint firstAttribute="trailing" secondItem="mym-Gd-goi" secondAttribute="trailing" constant="20" symbolic="YES" id="aS7-3S-6A9"/>
+                                        <constraint firstItem="Db8-hV-xHa" firstAttribute="leading" relation="lessThanOrEqual" secondItem="AfZ-cm-3AH" secondAttribute="leading" constant="253" id="jwv-il-f3J"/>
+                                        <constraint firstAttribute="trailing" secondItem="Db8-hV-xHa" secondAttribute="trailing" constant="47" id="nK8-ny-mtg"/>
+                                        <constraint firstItem="mym-Gd-goi" firstAttribute="centerY" secondItem="AfZ-cm-3AH" secondAttribute="centerY" constant="33" id="osP-cK-sds"/>
+                                        <constraint firstItem="Db8-hV-xHa" firstAttribute="centerY" secondItem="mym-Gd-goi" secondAttribute="centerY" id="syG-Mu-WjO"/>
+                                        <constraint firstItem="LWA-wO-2E3" firstAttribute="top" secondItem="chd-id-4bd" secondAttribute="bottom" constant="10" id="xa6-js-1Cf"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LWA-wO-2E3" secondAttribute="trailing" constant="8" id="yXi-bd-ii8"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="contentLabel" destination="LWA-wO-2E3" id="5bc-MO-A9J"/>
+                                    <outlet property="reminderButton" destination="mym-Gd-goi" id="JqX-yP-MYP"/>
+                                    <outlet property="reminderDateLabel" destination="Db8-hV-xHa" id="S7u-VM-nMg"/>
+                                    <outlet property="titleLabel" destination="chd-id-4bd" id="hnh-Ij-BVQ"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="2LG-KC-4QU" id="LXO-RG-9Em"/>
+                            <outlet property="delegate" destination="2LG-KC-4QU" id="pWT-3g-0Qu"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem title="Menu" image="ellipsis.circle" catalog="system" id="4eo-lP-bGL"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="rRB-ma-MVO"/>
+                        <barButtonItem title="Updated Today at 12:30" id="Oeb-TF-FE2" customClass="BarLabelItem" customModule="ANotes" customModuleProvider="target">
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="nha-8a-T2N"/>
+                        <barButtonItem title="Add" image="square.and.pencil" catalog="system" id="j0J-kB-you"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="Kii-Ps-SKo">
+                        <barButtonItem key="rightBarButtonItem" title="User" image="person.crop.circle" catalog="system" id="pQL-VJ-c2q"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="lastUpdateDateLabel" destination="Oeb-TF-FE2" id="Nrw-bp-KLa"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oYe-1A-2t1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="931.88405797101461" y="137.94642857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="alarm" catalog="system" width="124" height="128"/>
+        <image name="ellipsis.circle" catalog="system" width="128" height="121"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="121"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="115"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
