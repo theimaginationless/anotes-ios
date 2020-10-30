@@ -148,7 +148,7 @@ class NotesTableViewController: UITableViewController {
         }
         
         self.securedViewCover(enable: true)
-        let reason = "FaceID authentication"
+        let reason = "Typically run application"
         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
             isAuthorized, error in
             guard isAuthorized == true else {
