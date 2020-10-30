@@ -121,7 +121,7 @@ class NotesTableViewController: UITableViewController {
     }
     
     func logout() {
-        self.currentUser.noteDataSource.notes.removeAll()
+        self.userStore.prepareForRemove()
         let loginAndRegisterStoryboard = UIStoryboard(name: "LoginAndRegister", bundle: nil)
         guard let loginVC = loginAndRegisterStoryboard.instantiateViewController(identifier: "LoginViewController") as? LoginViewController else {
             print("Cannot instantiate LoginViewController")
@@ -175,7 +175,7 @@ class NotesTableViewController: UITableViewController {
         }
         else {
             let view = rootController.view.viewWithTag(tag)!
-            UIView.animate(withDuration: 0.3, delay: 0.4, options: .curveLinear, animations: {
+            UIView.animate(withDuration: 0.2, delay: 0.3, options: .curveLinear, animations: {
                 view.alpha = 0
             }, completion: {
                 result in

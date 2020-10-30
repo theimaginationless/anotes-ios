@@ -9,4 +9,10 @@ import Foundation
 
 class UserStore {
     var user: User?
+    
+    public func prepareForRemove() {
+        user?.noteDataSource.notes.removeAll()
+        user = nil
+        UserDefaults.standard.setValue(false, forKey: SettingKeys.BiometricAuth)
+    }
 }
