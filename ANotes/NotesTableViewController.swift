@@ -43,13 +43,13 @@ class NotesTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         self.updateLastSyncDate(date: self.currentUser.noteDataSource.lastSyncDate)
         self.syncData()
+        if isBiometricAuthEnabled {
+            self.biometricAuthentication()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if isBiometricAuthEnabled {
-            self.biometricAuthentication()
-        }
     }
         
     /// Update last updated date label
@@ -162,19 +162,24 @@ class NotesTableViewController: UITableViewController {
     }
     
     func securedViewCover(enable: Bool) {
-        let blurEffect = UIBlurEffect(style: .light)
-        
+        var blurEffectStyle: UIBlurEffect.Style = .light
+        if #available(iOS 13, *) {
+            if UIScreen.main.traitCollection.userInterfaceStyle == .dark {
+                blurEffectStyle = .dark
+            }
+        }
+        let blurEffect = UIBlurEffect(style: blurEffectStyle)
         let blurredEffectView = UIVisualEffectView(effect: blurEffect)
-        blurredEffectView.frame = self.view.window!.frame
+        blurredEffectView.frame = UIApplication.shared.windows.first!.frame
         blurredEffectView.translatesAutoresizingMaskIntoConstraints = false
-        let rootController = self.view.window!.rootViewController!
+        let rootController = UIApplication.shared.windows.first!
         let tag = 1
         if enable {
             blurredEffectView.tag = tag
-            rootController.view.addSubview(blurredEffectView)
+            rootController.addSubview(blurredEffectView)
         }
         else {
-            let view = rootController.view.viewWithTag(tag)!
+            let view = rootController.viewWithTag(tag)!
             UIView.animate(withDuration: 0.2, delay: 0.3, options: .curveLinear, animations: {
                 view.alpha = 0
             }, completion: {
