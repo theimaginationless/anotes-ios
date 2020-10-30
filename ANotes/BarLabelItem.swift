@@ -9,8 +9,7 @@ import UIKit
 
 class BarLabelItem: UIBarButtonItem {
     var label: UILabel!
-    private var prefix: String!
-    
+    private var prefix: String!    
     @IBInspectable var textColor: UIColor! {
         set {
             self.label?.textColor = newValue
@@ -22,7 +21,19 @@ class BarLabelItem: UIBarButtonItem {
     
     @IBInspectable var text: String? {
         set {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: 0.3) {
+                self.label?.text = newValue
+                self.label?.sizeToFit()
+            }
+        }
+        get {
+            return self.label?.text
+        }
+    }
+    
+    @IBInspectable var date: String? {
+        set {
+            UIView.animate(withDuration: 0.3) {
                 if let text = newValue {
                     self.label?.text = "\(self.prefix!) \(text)"
                 }
@@ -31,8 +42,6 @@ class BarLabelItem: UIBarButtonItem {
                 }
                 self.label?.sizeToFit()
             }
-            
-            
         }
         get {
             return self.label?.text

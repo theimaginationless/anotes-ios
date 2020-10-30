@@ -96,16 +96,14 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
         userStore.user = user
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
-              let notesVC = mainStoryboard.instantiateViewController(identifier: "NotesTableViewController") as? NotesTableViewController else {
+              let notesVC = mainNC.children.first as? NotesTableViewController else {
             print("Error when instantiate mainNC and notesVC")
             return
         }
         
         notesVC.userStore = self.userStore
-        mainNC.addChild(notesVC)
         mainNC.modalPresentationStyle = .overCurrentContext
         mainNC.modalTransitionStyle = .flipHorizontal
-        
         self.present(mainNC, animated: true)
     }
     

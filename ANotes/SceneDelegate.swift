@@ -18,17 +18,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         let userStore = UserStore()
-        
+        let adminUser = User(username: "admin", password: "xyz3000", fullname: "", authToken: "Bearer eyJhbGciOiJIUzM4NCJ9eyJgzdWIiOiJhZG1pbiIsImlhdCI6MTYwMzkxNjAyOSwiZXhwIjoxNjA2MzM1MjI5fQL6uMLT9rG_99Yni72hZyDxyUtqdTiCsCmbdogtN43VPghLf1XMW1A2NLrhF7nmVF")
+        userStore.user = adminUser
         
         if userStore.user != nil {
             let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
             guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
-                  let notesVC = mainStoryboard.instantiateViewController(identifier: "NotesTableViewController") as? NotesTableViewController else {
+                  let notesVC = mainNC.children.first as? NotesTableViewController else {
                 print("Error when instantiate mainNC and notesVC")
                 return
             }
             notesVC.userStore = userStore
-            mainNC.addChild(notesVC)
             self.window?.rootViewController = mainNC
         }
         else {

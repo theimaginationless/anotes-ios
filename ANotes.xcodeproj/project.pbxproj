@@ -20,6 +20,8 @@
 		EB549942254ABB1000F411F4 /* ButtonLabelLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB549941254ABB1000F411F4 /* ButtonLabelLocalized.swift */; };
 		EB549947254ABBC200F411F4 /* TitleLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB549946254ABBC200F411F4 /* TitleLocalized.swift */; };
 		EB54994C254ABBF400F411F4 /* MessagesLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB54994B254ABBF400F411F4 /* MessagesLocalized.swift */; };
+		EBB34413254C5F120024C9DE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EBB34412254C5F120024C9DE /* Settings.bundle */; };
+		EBB34418254C60800024C9DE /* SettingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB34417254C60800024C9DE /* SettingKeys.swift */; };
 		EBBB851D254481EE0080B18A /* LoginAndRegister.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBB851C254481EE0080B18A /* LoginAndRegister.storyboard */; };
 		EBD2A4842545A12F00A649C3 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A4832545A12F00A649C3 /* UIRoundedButton.swift */; };
 		EBD2A49C2545C76800A649C3 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A49B2545C76800A649C3 /* Note.swift */; };
@@ -69,6 +71,8 @@
 		EB549941254ABB1000F411F4 /* ButtonLabelLocalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonLabelLocalized.swift; sourceTree = "<group>"; };
 		EB549946254ABBC200F411F4 /* TitleLocalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLocalized.swift; sourceTree = "<group>"; };
 		EB54994B254ABBF400F411F4 /* MessagesLocalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLocalized.swift; sourceTree = "<group>"; };
+		EBB34412254C5F120024C9DE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		EBB34417254C60800024C9DE /* SettingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingKeys.swift; sourceTree = "<group>"; };
 		EBBB851C254481EE0080B18A /* LoginAndRegister.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginAndRegister.storyboard; sourceTree = "<group>"; };
 		EBD2A4832545A12F00A649C3 /* UIRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundedButton.swift; sourceTree = "<group>"; };
 		EBD2A49B2545C76800A649C3 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
@@ -135,8 +139,10 @@
 				EBD2A49A2545C74B00A649C3 /* model */,
 				EBD2A4992545C74100A649C3 /* api */,
 				EB07E1352543F9C40047792B /* AppDelegate.swift */,
+				EBB34417254C60800024C9DE /* SettingKeys.swift */,
 				EB07E1372543F9C40047792B /* SceneDelegate.swift */,
 				EBE16F1025486471003DC84A /* NotesTableViewController.swift */,
+				EBB34412254C5F120024C9DE /* Settings.bundle */,
 				EBD2A4AD2546B6A200A649C3 /* LoginViewController.swift */,
 				EBE0C6F52548673C005C71CD /* MainNavigationController.swift */,
 				EBD2A4B52547046100A649C3 /* RegisterViewController.swift */,
@@ -304,6 +310,7 @@
 			files = (
 				EB07E1422543F9C60047792B /* LaunchScreen.storyboard in Resources */,
 				EB07E13F2543F9C60047792B /* Assets.xcassets in Resources */,
+				EBB34413254C5F120024C9DE /* Settings.bundle in Resources */,
 				EB07E13D2543F9C40047792B /* Main.storyboard in Resources */,
 				EBBB851D254481EE0080B18A /* LoginAndRegister.storyboard in Resources */,
 			);
@@ -338,6 +345,7 @@
 				EB549947254ABBC200F411F4 /* TitleLocalized.swift in Sources */,
 				EB07E1362543F9C40047792B /* AppDelegate.swift in Sources */,
 				EBD88F6125485A890095D6BB /* BarLabelItem.swift in Sources */,
+				EBB34418254C60800024C9DE /* SettingKeys.swift in Sources */,
 				EB0D9143254B3DED000E7DA5 /* NoteTableViewCell.swift in Sources */,
 				EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */,
 				EBD2A4BC254706F400A649C3 /* UserStore.swift in Sources */,

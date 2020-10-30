@@ -105,20 +105,33 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
                                     <real key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="animationSpeed">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="nha-8a-T2N"/>
                         <barButtonItem title="Add" image="square.and.pencil" catalog="system" id="j0J-kB-you"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Kii-Ps-SKo">
-                        <barButtonItem key="rightBarButtonItem" title="User" image="person.crop.circle" catalog="system" id="pQL-VJ-c2q"/>
+                        <barButtonItem key="rightBarButtonItem" title="User" image="person.crop.circle" catalog="system" id="pQL-VJ-c2q">
+                            <connections>
+                                <action selector="logoutAction:" destination="2LG-KC-4QU" id="SWq-Zf-0Gw"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="lastUpdateDateLabel" destination="Oeb-TF-FE2" id="Nrw-bp-KLa"/>
+                        <outlet property="userButton" destination="pQL-VJ-c2q" id="JGl-Ai-W1L"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oYe-1A-2t1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="EmK-fF-fVS">
+                    <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button"/>
+                </button>
             </objects>
             <point key="canvasLocation" x="931.88405797101461" y="137.94642857142856"/>
         </scene>

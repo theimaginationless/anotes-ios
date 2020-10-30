@@ -39,7 +39,11 @@ enum RequestType: String {
 }
 
 struct AnotesApi {
-    private static let baseUrlString = "http://theimless.me:8080"
+    private static var baseUrlString: String! {
+        get {
+            UserDefaults.standard.string(forKey: SettingKeys.Backend) ?? ""
+        }
+    }
     private static let session: URLSession = {
         let config = URLSessionConfiguration.default
         return URLSession(configuration: config)
