@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */; };
 		EB07E1362543F9C40047792B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1352543F9C40047792B /* AppDelegate.swift */; };
 		EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1372543F9C40047792B /* SceneDelegate.swift */; };
 		EB07E13D2543F9C40047792B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB07E13B2543F9C40047792B /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewController.swift; sourceTree = "<group>"; };
 		EB07E1322543F9C40047792B /* ANotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB07E1352543F9C40047792B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB07E1372543F9C40047792B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				EBB34417254C60800024C9DE /* SettingKeys.swift */,
 				EB07E1372543F9C40047792B /* SceneDelegate.swift */,
 				EBE16F1025486471003DC84A /* NotesTableViewController.swift */,
+				EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */,
 				EBB34412254C5F120024C9DE /* Settings.bundle */,
 				EBD2A4AD2546B6A200A649C3 /* LoginViewController.swift */,
 				EBE0C6F52548673C005C71CD /* MainNavigationController.swift */,
@@ -348,6 +351,7 @@
 				EBB34418254C60800024C9DE /* SettingKeys.swift in Sources */,
 				EB0D9143254B3DED000E7DA5 /* NoteTableViewCell.swift in Sources */,
 				EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */,
+				EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */,
 				EBD2A4BC254706F400A649C3 /* UserStore.swift in Sources */,
 				EB549942254ABB1000F411F4 /* ButtonLabelLocalized.swift in Sources */,
 				EBD2A4842545A12F00A649C3 /* UIRoundedButton.swift in Sources */,

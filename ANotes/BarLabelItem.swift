@@ -73,7 +73,7 @@ class BarLabelItem: UIBarButtonItem {
     }
     
     private func initializeItem() {
-        self.prefix = NSLocalizedString("Updated", comment: "Prefix for Updated Today, 10:30")
+        self.prefix = NSLocalizedString("Restored", comment: "Prefix for restored Today, 10:30")
         self.label = UILabel(frame: CGRect.zero)
         self.label.textAlignment = .center
         self.label.sizeToFit()

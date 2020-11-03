@@ -14,13 +14,19 @@ class Note {
     var reminderDate: Date?
     var creationDate: Date!
     var editDate: Date!
+    var backedUp: Bool!
     
-    init(title: String, text: String, pinned: Bool?, reminderDate: Date?, creationDate: Date?, editDate: Date) {
+    init(title: String, text: String, pinned: Bool, reminderDate: Date?, creationDate: Date, editDate: Date?) {
         self.title = title
         self.text = text
-        self.pinned = pinned ?? false
+        self.pinned = pinned
         self.reminderDate = reminderDate
         self.creationDate = creationDate
-        self.editDate = editDate
+        self.editDate = editDate ?? creationDate
+        self.backedUp = false
+    }
+    
+    convenience init() {
+        self.init(title: "", text: "", pinned: false, reminderDate: nil, creationDate: Date(), editDate: nil)
     }
 }

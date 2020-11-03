@@ -16,7 +16,8 @@ enum Endpoint: String {
 
 enum AnotesResult {
     case AuthSuccess(String)
-    case FetchSuccess([Note])
+    case RestoreSuccess([Note])
+    case BackupSuccess
     case JSONFromDataSuccess([String:AnyObject])
     case Failure(Error)
 }
@@ -36,6 +37,11 @@ enum AnotesError: Error {
 enum RequestType: String {
     case POST = "POST"
     case GET = "GET"
+}
+
+enum Operation {
+    case Restore
+    case Backup
 }
 
 struct AnotesApi {
@@ -226,7 +232,7 @@ struct AnotesApi {
         }
     }
     
-    static func fetchNotes(for user: User, completion: @escaping (AnotesResult) -> Void) {
+    static func restoreNotes(for user: User, completion: @escaping (AnotesResult) -> Void) {
         guard let url = self.anotesUrl(endpoint: .restore) else {
             return
         }
@@ -246,6 +252,7 @@ struct AnotesApi {
             case 200...299:
                 let fetchResult = self.jsonNotesFromData(data: data)
                 completion(fetchResult)
+                return
             case 403:
                 print("Status code: \(httpResponse.statusCode). Token expired? Try to refresh it!")
                 self.authenticate(username: user.username, password: user.password) {
@@ -254,11 +261,12 @@ struct AnotesApi {
                     case let .AuthSuccess(token):
                         print("Authentication succesful!")
                         user.authToken = token
-                        self.fetchNotes(for: user, completion: completion)
+                        self.restoreNotes(for: user, completion: completion)
                     default:
                         completion(.Failure(AnotesError.AuthError))
                     }
                 }
+                return
             case 404:
                 completion(.Failure(AnotesError.NetworkError("")))
                 return
@@ -269,6 +277,84 @@ struct AnotesApi {
         }
         
         task.resume()
+    }
+    
+    /// Backing up notes to backend
+    /// - Parameter for: authenticated user
+    /// - Parameter with: array of notes which needs backup
+    /// - Parameter completion: completion for using result
+    static func backupNotes(for user: User, with notes: [Note], completion: @escaping (AnotesResult) -> Void) {        
+        guard let url = self.anotesUrl(endpoint: .backup) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.addValue("Application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(user.authToken, forHTTPHeaderField: "Authorization")
+        let notesDict = self.jsonFromNotes(notes: notes)
+        guard let jsonBody = try? JSONSerialization.data(withJSONObject: notesDict, options: []) else {
+            completion(.Failure(AnotesError.InvalidJSONFormat))
+            return
+        }
+        
+        request.httpMethod = RequestType.POST.rawValue
+        request.httpBody = jsonBody
+        let task = self.session.dataTask(with: request) {
+            (data, response, error) in
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.Failure(AnotesError.BadResponse))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200...299:
+                completion(.BackupSuccess)
+                return
+            case 403:
+                print("Status code: \(httpResponse.statusCode). Token expired? Try to refresh it!")
+                self.authenticate(username: user.username, password: user.password) {
+                    (result) in
+                    switch result {
+                    case let .AuthSuccess(newToken):
+                        print("Authentication successful!")
+                        user.authToken = newToken
+                        self.backupNotes(for: user, with: notes, completion: completion)
+                    default:
+                        completion(.Failure(AnotesError.AuthError))
+                    }
+                }
+            case 404:
+                print("Code: \(httpResponse.statusCode)")
+                completion(.Failure(AnotesError.NetworkError("")))
+                return
+            default:
+                let errorMessage = "\(NSLocalizedString("Status code:", comment: "Body for Unknown error")) \(httpResponse.statusCode)"
+                print(errorMessage)
+                completion(.Failure(AnotesError.UnknownError(errorMessage)))
+                return
+            }
+        }
+        
+        task.resume()
+    }
+    
+    /// Make JSON from Note instance
+    /// - Parameter note: note for transforming to json
+    private static func jsonFromNote(note: Note) -> [String:AnyObject] {
+        let noteDict =
+            ["title":note.title!,
+             "text":note.text!,
+             "pinned":String(note.pinned!),
+             "creationDate":dateFormatter.string(from: note.creationDate),
+             "editDate":dateFormatter.string(from: note.editDate)] as [String:AnyObject]
+        
+        return noteDict
+    }
+    
+    private static func jsonFromNotes(notes: [Note]) -> [String:AnyObject] {
+        let notesDict = notes.map{self.jsonFromNote(note: $0)}
+        return ["notes": notesDict] as [String:AnyObject]
     }
     
     private static func jsonNotesFromData(data: Data?) -> AnotesResult {
@@ -293,7 +379,7 @@ struct AnotesApi {
                 }
             }
             
-            return .FetchSuccess(resultNotes)
+            return .RestoreSuccess(resultNotes)
         }
         catch let error {
             return .Failure(error)

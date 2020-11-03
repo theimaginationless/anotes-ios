@@ -102,7 +102,7 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
         }
         
         notesVC.userStore = self.userStore
-        mainNC.modalPresentationStyle = .overCurrentContext
+        mainNC.modalPresentationStyle = .fullScreen
         mainNC.modalTransitionStyle = .flipHorizontal
         self.present(mainNC, animated: true)
     }
