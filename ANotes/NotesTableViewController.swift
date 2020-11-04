@@ -114,9 +114,6 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
         case .Backup:
             let indices = self.currentUser.noteDataSource.notBackedIndices
             let allNotes = self.currentUser.noteDataSource.notes
-            guard !allNotes.isEmpty else {
-                return
-            }
             
             AnotesApi.backupNotes(for: currentUser, with: allNotes) {
                 (result) in
@@ -230,25 +227,31 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
         switch segue.identifier {
         case "NewNoteSegue":
             if let destination = segue.destination as? NoteDetailViewController {
-                let note = Note()
-                self.currentUser.noteDataSource.notes.append(note)
+                //self.currentUser.noteDataSource.notes.append(note)
                 destination.delegate = self
-                destination.note = note
+                destination.noteDataSource = self.currentUser.noteDataSource
+                //destination.note = note
             }
         case "EditNoteSegue":
             if let destination = segue.destination as? NoteDetailViewController {
                 if let cell = sender as? NoteTableViewCell,
                    let indexPath = self.tableView.indexPath(for: cell) {
                     var note: Note!
-                    switch indexPath.section {
-                    case 0:
-                        note = self.currentUser.noteDataSource.notes.filter{$0.pinned}[indexPath.row]
-                    case 1:
-                        note = self.currentUser.noteDataSource.notes.filter{!$0.pinned}[indexPath.row]
-                    default:
-                        note = Note()
+                    if self.numberOfSections(in: self.tableView) > 1 {
+                        switch indexPath.section {
+                        case 0:
+                            note = self.currentUser.noteDataSource.notes.filter{$0.pinned}[indexPath.row]
+                        case 1:
+                            note = self.currentUser.noteDataSource.notes.filter{!$0.pinned}[indexPath.row]
+                        default:
+                            note = nil
+                        }
+                    }
+                    else {
+                        note = self.currentUser.noteDataSource.notes[indexPath.row]
                     }
                     destination.delegate = self
+                    destination.noteDataSource = self.currentUser.noteDataSource
                     destination.note = note
                 }
             }

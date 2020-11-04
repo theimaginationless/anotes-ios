@@ -13,4 +13,5 @@ class NoteTableViewCell: UITableViewCell {
     @IBOutlet var reminderButton: UIButton!
     @IBOutlet var reminderDateLabel: UILabel!
     @IBOutlet var backedUpButton: UIButton!
+    var noteId: String!
 }

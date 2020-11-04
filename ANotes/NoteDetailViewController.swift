@@ -18,20 +18,29 @@ class NoteDetailViewController: UIViewController {
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var contentTextField: UITextField!
     var delegate: NotifyReloadDataDelegate!
+    var noteDataSource: NoteDataSource!
     var note: Note!
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        note.editDate = Date()
+        self.note.editDate = Date()
+        if noteDataSource.notes.firstIndex(of: self.note) == nil {
+            if self.note.title.isEmpty || self.note.text.isEmpty {
+                return
+            }
+            self.noteDataSource.notes.append(self.note)
+        }
         self.delegate.notifyReloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.note == nil {
+            self.note = Note()
+        }
         self.reminderDatePicker.addTarget(self, action: #selector(self.settingReminderDate), for: .valueChanged)
         self.titleTextField.addTarget(self, action: #selector(self.titleChanged(_:)), for: .editingChanged)
         self.contentTextField.addTarget(self, action: #selector(self.contentChanged(_:)), for: .editingChanged)
-        
         self.titleTextField.text = self.note.title
         self.contentTextField.text = self.note.text
         self.pinnedToggler(state: self.note.pinned)
@@ -42,25 +51,29 @@ class NoteDetailViewController: UIViewController {
     }
     
     @objc func contentChanged(_ textField: UITextField) {
-        self.note.text = textField.text
-        note.backedUp = false
+        if !textField.text!.isEmpty {
+            self.note.text = textField.text
+            self.note.backedUp = false
+        }
     }
     
     @objc func titleChanged(_ textField: UITextField) {
-        self.note.title = textField.text
-        note.backedUp = false
+        if !textField.text!.isEmpty {
+            self.note.title = textField.text
+            self.note.backedUp = false
+        }
     }
     
     @IBAction func pinnedAction(_ sender: Any) {
         let state = !self.note.pinned
         self.pinnedToggler(state: state)
-        note.backedUp = false
+        self.note.backedUp = false
     }
     
     @IBAction func reminderAction(_ sender: Any) {
         let reminderState = self.reminderSwitch.isOn
         self.reminderToggler(state: reminderState)
-        note.backedUp = false
+        self.note.backedUp = false
     }
     
     func pinnedToggler(state: Bool) {
@@ -71,16 +84,17 @@ class NoteDetailViewController: UIViewController {
     
     func reminderToggler(state: Bool) {
         self.reminderDatePicker.isEnabled = state
+        self.reminderSwitch.isOn = state
         if state {
-            note.reminderDate = reminderDatePicker.date
+            self.note.reminderDate = reminderDatePicker.date
         }
         else {
-            note.reminderDate = nil
+            self.note.reminderDate = nil
         }
     }
     
     @objc func settingReminderDate() {
         self.note.reminderDate = self.reminderDatePicker.date
-        note.backedUp = false
+        self.note.backedUp = false
     }
 }

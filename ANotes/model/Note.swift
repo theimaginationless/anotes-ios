@@ -7,7 +7,8 @@
 
 import UIKit
 
-class Note {
+class Note: Equatable {
+    var id: String
     var title: String!
     var text: String!
     var pinned: Bool!
@@ -24,9 +25,14 @@ class Note {
         self.creationDate = creationDate
         self.editDate = editDate ?? creationDate
         self.backedUp = false
+        self.id = UUID().uuidString
     }
     
     convenience init() {
         self.init(title: "", text: "", pinned: false, reminderDate: nil, creationDate: Date(), editDate: nil)
+    }
+    
+    static func == (lhs: Note, rhs: Note) -> Bool {
+        return lhs.id == rhs.id
     }
 }

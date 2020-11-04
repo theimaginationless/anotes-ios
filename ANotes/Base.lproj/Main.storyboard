@@ -61,7 +61,7 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mym-Gd-goi">
                                             <rect key="frame" x="373" y="77" width="19" height="22"/>
-                                            <state key="normal" image="alarm" catalog="system"/>
+                                            <state key="normal" image="alarm.fill" catalog="system"/>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wednesday at 10:15" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Db8-hV-xHa">
                                             <rect key="frame" x="251" y="80.5" width="114" height="15"/>
@@ -232,7 +232,7 @@
         <segue reference="QkA-kv-2p7"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="alarm" catalog="system" width="124" height="128"/>
+        <image name="alarm.fill" catalog="system" width="124" height="128"/>
         <image name="icloud.and.arrow.up" catalog="system" width="128" height="106"/>
         <image name="icloud.slash" catalog="system" width="128" height="101"/>
         <image name="person.crop.circle" catalog="system" width="128" height="121"/>

@@ -292,6 +292,7 @@ struct AnotesApi {
         request.addValue("Application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(user.authToken, forHTTPHeaderField: "Authorization")
         let notesDict = self.jsonFromNotes(notes: notes)
+        print("\(notesDict)")
         guard let jsonBody = try? JSONSerialization.data(withJSONObject: notesDict, options: []) else {
             completion(.Failure(AnotesError.InvalidJSONFormat))
             return
@@ -342,14 +343,18 @@ struct AnotesApi {
     /// Make JSON from Note instance
     /// - Parameter note: note for transforming to json
     private static func jsonFromNote(note: Note) -> [String:AnyObject] {
-        let noteDict =
+        var noteDict =
             ["title":note.title!,
              "text":note.text!,
              "pinned":String(note.pinned!),
              "creationDate":dateFormatter.string(from: note.creationDate),
-             "editDate":dateFormatter.string(from: note.editDate)] as [String:AnyObject]
+             "editDate":dateFormatter.string(from: note.editDate)]
         
-        return noteDict
+        if let reminderDate = note.reminderDate {
+            noteDict["reminderDate"] = dateFormatter.string(from: reminderDate)
+        }
+        
+        return noteDict as [String:AnyObject]
     }
     
     private static func jsonFromNotes(notes: [Note]) -> [String:AnyObject] {
