@@ -20,21 +20,29 @@ class NoteDetailViewController: UIViewController {
     var delegate: NotifyReloadDataDelegate!
     var noteDataSource: NoteDataSource!
     var note: Note!
+    var isEdited: Bool = false
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.note.editDate = Date()
         if noteDataSource.notes.firstIndex(of: self.note) == nil {
             if self.note.title.isEmpty || self.note.text.isEmpty {
                 return
             }
+            
             self.noteDataSource.notes.append(self.note)
         }
-        self.delegate.notifyReloadData()
+        
+        if self.isEdited {
+            self.note.editDate = Date()
+            self.delegate.notifyReloadData()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let downSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.downSwipeGestureAction))
+        downSwipeGesture.direction = .down
+        self.view.addGestureRecognizer(downSwipeGesture)
         if self.note == nil {
             self.note = Note()
         }
@@ -44,6 +52,8 @@ class NoteDetailViewController: UIViewController {
         self.titleTextField.text = self.note.title
         self.contentTextField.text = self.note.text
         self.pinnedToggler(state: self.note.pinned)
+        // Threshold on current date for reminder
+        self.reminderDatePicker.minimumDate = Date()
         if let reminderDate = note.reminderDate {
             self.reminderToggler(state: true)
             self.reminderDatePicker.date = reminderDate
@@ -54,6 +64,7 @@ class NoteDetailViewController: UIViewController {
         if !textField.text!.isEmpty {
             self.note.text = textField.text
             self.note.backedUp = false
+            self.isEdited = true
         }
     }
     
@@ -61,6 +72,7 @@ class NoteDetailViewController: UIViewController {
         if !textField.text!.isEmpty {
             self.note.title = textField.text
             self.note.backedUp = false
+            self.isEdited = true
         }
     }
     
@@ -68,12 +80,14 @@ class NoteDetailViewController: UIViewController {
         let state = !self.note.pinned
         self.pinnedToggler(state: state)
         self.note.backedUp = false
+        self.isEdited = true
     }
     
     @IBAction func reminderAction(_ sender: Any) {
         let reminderState = self.reminderSwitch.isOn
         self.reminderToggler(state: reminderState)
         self.note.backedUp = false
+        self.isEdited = true
     }
     
     func pinnedToggler(state: Bool) {
@@ -96,5 +110,14 @@ class NoteDetailViewController: UIViewController {
     @objc func settingReminderDate() {
         self.note.reminderDate = self.reminderDatePicker.date
         self.note.backedUp = false
+        self.isEdited = true
+    }
+    
+    @objc func downSwipeGestureAction() {
+        self.hideKeyboard()
+    }
+    
+    func hideKeyboard() {
+        self.view.endEditing(true)
     }
 }

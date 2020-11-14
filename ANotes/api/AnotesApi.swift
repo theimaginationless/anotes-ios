@@ -76,7 +76,7 @@ struct AnotesApi {
     /// - Parameter jsonBody: JSON Body for request
     /// - Parameter headerParams: Additional http header parameters for request
     /// - Parameter completion: Completion handler for use response
-    static func fetchRequestResult(url: URL, type requestType: RequestType, jsonBody: [String:String]?, headerParams: [String:String]?, completion: @escaping (AnotesResult) -> Void) {
+    private static func fetchRequestResult(url: URL, type requestType: RequestType, jsonBody: [String:String]?, headerParams: [String:String]?, completion: @escaping (AnotesResult) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = requestType.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Tyoe")
@@ -180,7 +180,7 @@ struct AnotesApi {
         return .Failure(AnotesError.BadResponse)
     }
     
-    static func JSONFrom(data: Data?) -> AnotesResult {
+    private static func JSONFrom(data: Data?) -> AnotesResult {
         guard let jsonData = data else {
             return .Failure(AnotesError.EmptyJSONData)
         }
@@ -188,7 +188,7 @@ struct AnotesApi {
         return jsonFromData(from: jsonData)
     }
     
-    static func noteFromJSON(object: [String:AnyObject]) -> Note? {
+    private static func noteFromJSON(object: [String:AnyObject]) -> Note? {
         guard
             let title = object["title"] as? String,
             let text = object["text"] as? String,
@@ -232,6 +232,9 @@ struct AnotesApi {
         }
     }
     
+    /// Restore notes from backend
+    /// - Parameter for: user
+    /// - Parameter completion: completion for using fetched notes
     static func restoreNotes(for user: User, completion: @escaping (AnotesResult) -> Void) {
         guard let url = self.anotesUrl(endpoint: .restore) else {
             return

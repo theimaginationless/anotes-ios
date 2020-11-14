@@ -100,6 +100,10 @@ class NoteDataSource: NSObject, UITableViewDataSource {
             let noteIndex = self.notes.firstIndex(of: stubNote)!
             self.notes.remove(at: noteIndex)
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            let notPinnedNotes = self.notes.filter{!$0.pinned}
+            if notPinnedNotes.count == 0 && deletableSectionItems == 1 {
+                tableView.reloadSections([deletableSectionItems], with: .automatic)
+            }
         default:
             return
         }
@@ -127,7 +131,6 @@ class NoteDataSource: NSObject, UITableViewDataSource {
         default:
             return cell
         }
-        
         
         cell.titleLabel.text = note.title
         cell.contentLabel.text = note.text

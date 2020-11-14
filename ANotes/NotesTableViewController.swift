@@ -227,17 +227,15 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
         switch segue.identifier {
         case "NewNoteSegue":
             if let destination = segue.destination as? NoteDetailViewController {
-                //self.currentUser.noteDataSource.notes.append(note)
                 destination.delegate = self
                 destination.noteDataSource = self.currentUser.noteDataSource
-                //destination.note = note
             }
         case "EditNoteSegue":
             if let destination = segue.destination as? NoteDetailViewController {
                 if let cell = sender as? NoteTableViewCell,
                    let indexPath = self.tableView.indexPath(for: cell) {
                     var note: Note!
-                    if self.numberOfSections(in: self.tableView) > 1 {
+                    if self.userDataSource.user.noteDataSource.numberOfSections(in: self.tableView) > 1 {
                         switch indexPath.section {
                         case 0:
                             note = self.currentUser.noteDataSource.notes.filter{$0.pinned}[indexPath.row]
