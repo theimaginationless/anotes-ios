@@ -19,7 +19,6 @@ class UIRoundedButton: UIButton {
     @IBInspectable var cornerRadius: CGFloat = 2.0 {
         didSet {
             layer.cornerRadius = self.cornerRadius
-            //layer.masksToBounds = self.cornerRadius > 0
         }
     }
     

@@ -31,6 +31,9 @@ class NoteStore {
         return result
     }
     
+    /// Restore notes from backend
+    /// - Parameter for: user for authentication
+    /// - Parameter completion: completion for using returned note instances
     func restoreNotesFromBackend(for user: User, completion: @escaping (AnotesResult) -> Void) {
         AnotesApi.fetchNotesData(for: user) {
             (dataResult) in
@@ -44,6 +47,8 @@ class NoteStore {
         }
     }
     
+    /// Restore notes from local persistence
+    /// - Parameter completion: completion for using returned note instances
     func restoreNotesFromLocal(completion: @escaping (AnotesResult) -> Void) {
         let sortByEditDate = NSSortDescriptor(key: "editDate", ascending: false)
         
@@ -55,6 +60,7 @@ class NoteStore {
         completion(.RestoreSuccess(notes))
     }
     
+    /// Remove all note entities from local persistence
     func resetLocalNotes() {
         let mainQueueContext = self.coreDataStack.mainQueueContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
@@ -100,6 +106,8 @@ class NoteStore {
         return notes
     }
     
+    /// Create new note instance
+    /// - Returns: CoreData persisted note instance
     func createNote() -> Note {
         var note: Note!
         self.coreDataStack.mainQueueContext.performAndWait {
@@ -109,6 +117,8 @@ class NoteStore {
         return note
     }
     
+    /// Remove note entity from local persistence
+    /// - Parameter note: note instance for removing
     func remove(note: Note) {
         let mainQueueContext = self.coreDataStack.mainQueueContext
         mainQueueContext.performAndWait {

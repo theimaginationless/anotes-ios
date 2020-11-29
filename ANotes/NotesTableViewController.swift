@@ -111,7 +111,6 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                         notesArray.forEach{$0.backedUp = true}
                         self.currentUser.noteDataSource.notes = notesArray
                         self.currentUser.noteDataSource.lastRestoreDate = Date()
-                        //self.updateLastRestoreDate(date: self.currentUser.noteDataSource.lastSyncDate)
                         self.notifyReloadData()
                         do {
                             try self.currentUser.noteStore.coreDataStack.saveChanges()

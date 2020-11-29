@@ -36,6 +36,8 @@ class CoreDataStack {
         self.managedObjectModelName = modelName
     }
     
+    /// Save persistence changes
+    /// - Throws: Error what indicating cause
     func saveChanges() throws {
         var error: Error?
         mainQueueContext.performAndWait {

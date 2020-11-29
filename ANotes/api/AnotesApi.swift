@@ -290,59 +290,7 @@ struct AnotesApi {
         
         task.resume()
     }
-    
-//    /// Restore notes from backend
-//    /// - Parameter for: user
-//    /// - Parameter completion: completion for using fetched notes
-//    /// - Parameter inContext: CoreData context
-//    /// - Description: Make request to backend and return last snapshot
-//    static func restoreNotes(for user: User, inContext context: NSManagedObjectContext completion: @escaping (AnotesResult) -> Void) {
-//        guard let url = self.anotesUrl(endpoint: .restore) else {
-//            return
-//        }
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = RequestType.GET.rawValue
-//        request.addValue(user.authToken, forHTTPHeaderField: "Authorization")
-//        let task = self.session.dataTask(with: request) {
-//            (data, response, error) in
-//
-//            guard let httpResponse = response as? HTTPURLResponse else {
-//                completion(.Failure(AnotesError.BadResponse))
-//                return
-//            }
-//
-//            switch httpResponse.statusCode {
-//            case 200...299:
-//                let fetchResult = self.notesFrom(data: data, inContext: context)
-//                completion(fetchResult)
-//                return
-//            case 403:
-//                print("Status code: \(httpResponse.statusCode). Token expired? Try to refresh it!")
-//                self.authenticate(username: user.username, password: user.password) {
-//                    (result) in
-//                    switch result {
-//                    case let .AuthSuccess(token):
-//                        print("Authentication succesful!")
-//                        user.authToken = token
-//                        self.restoreNotes(for: user, completion: completion)
-//                    default:
-//                        completion(.Failure(AnotesError.AuthError))
-//                    }
-//                }
-//                return
-//            case 404:
-//                completion(.Failure(AnotesError.NetworkError("")))
-//                return
-//            default:
-//                completion(.Failure(AnotesError.UnknownError("\(NSLocalizedString("Status code:", comment: "Body for Unknown error")) \(httpResponse.statusCode)")))
-//                return
-//            }
-//        }
-//
-//        task.resume()
-//    }
-    
+
     /// Backing up notes to backend
     /// - Parameter for: authenticated user
     /// - Parameter with: array of notes which needs backup
