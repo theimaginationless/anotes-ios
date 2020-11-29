@@ -94,6 +94,7 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
     /// - Parameter user: user for log in
     func login(for user: User) {
         userStore.user = user
+        User.saveSession(for: user)
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
               let notesVC = mainNC.children.first as? NotesTableViewController else {

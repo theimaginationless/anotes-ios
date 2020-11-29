@@ -38,7 +38,7 @@ class BarLabelItem: UIBarButtonItem {
                     self.label?.text = "\(self.prefix!) \(text)"
                 }
                 else {
-                    self.label?.text = NSLocalizedString("Never updated", comment: "Label placeholder for never updated notes")
+                    self.label?.text = NSLocalizedString("Never backed up", comment: "Label placeholder for never backed up notes")
                 }
                 self.label?.sizeToFit()
             }
@@ -73,7 +73,7 @@ class BarLabelItem: UIBarButtonItem {
     }
     
     private func initializeItem() {
-        self.prefix = NSLocalizedString("Restored", comment: "Prefix for restored Today, 10:30")
+        self.prefix = NSLocalizedString("Last backup", comment: "Prefix for last backup Today, 10:30")
         self.label = UILabel(frame: CGRect.zero)
         self.label.textAlignment = .center
         self.label.sizeToFit()

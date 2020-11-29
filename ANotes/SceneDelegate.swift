@@ -18,10 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         let userStore = UserStore()
-        let adminUser = User(username: "admin", password: "xyz3000", fullname: "", authToken: "Bearer eyJhbGciOiJIUzM4NCJ9eyJgzdWIiOiJhZG1pbiIsImlhdCI6MTYwMzkxNjAyOSwiZXhwIjoxNjA2MzM1MjI5fQL6uMLT9rG_99Yni72hZyDxyUtqdTiCsCmbdogtN43VPghLf1XMW1A2NLrhF7nmVF")
-        userStore.user = adminUser
+//        let adminUser = User(username: "admin", password: "xyz3000", fullname: "", authToken: "Bearer eyJhbGciOiJIUzM4NCJ9eyJgzdWIiOiJhZG1pbiIsImlhdCI6MTYwMzkxNjAyOSwiZXhwIjoxNjA2MzM1MjI5fQL6uMLT9rG_99Yni72hZyDxyUtqdTiCsCmbdogtN43VPghLf1XMW1A2NLrhF7nmVF")
+        //User.saveSession(for: adminUser)
         
-        if userStore.user != nil {
+        if let user = User.getLastSessionUser() {
+            userStore.user = user
             let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
             guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
                   let notesVC = mainNC.children.first as? NotesTableViewController else {

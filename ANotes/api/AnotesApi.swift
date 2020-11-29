@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 enum Endpoint: String {
     case login = "/login"
@@ -17,6 +18,7 @@ enum Endpoint: String {
 enum AnotesResult {
     case AuthSuccess(String)
     case RestoreSuccess([Note])
+    case DataRestoreSuccess(Data?)
     case BackupSuccess
     case JSONFromDataSuccess([String:AnyObject])
     case Failure(Error)
@@ -117,7 +119,7 @@ struct AnotesApi {
         let task = session.dataTask(with: request) {
             (data, response, error) in
             
-            let result = self.authProcessingHeader(header: response)
+            let result = self.authHeaderProcessing(header: response)
             completion(result)
         }
         
@@ -159,7 +161,7 @@ struct AnotesApi {
     /// Extract authentication token from response's header
     /// - Parameter header: header with authentication token
     /// - Returns: AnotesResult with token or error
-    private static func authProcessingHeader(header: URLResponse?) -> AnotesResult {
+    private static func authHeaderProcessing(header: URLResponse?) -> AnotesResult {
         guard let responseHeader = header as? HTTPURLResponse else {
             return .Failure(AnotesError.BadResponse)
         }
@@ -188,7 +190,10 @@ struct AnotesApi {
         return jsonFromData(from: jsonData)
     }
     
-    private static func noteFromJSON(object: [String:AnyObject]) -> Note? {
+    /// Extract note instance from JSON dictionary representation
+    /// - Parameter object: JSONised dictionary
+    /// - Parameter inContext: CoreData context
+    private static func noteFromJSON(object: [String:AnyObject], inContext context: NSManagedObjectContext) -> Note? {
         guard
             let title = object["title"] as? String,
             let text = object["text"] as? String,
@@ -207,12 +212,16 @@ struct AnotesApi {
             reminderDate = dateFormatter.date(from: reminderDateString!)
         }
         
-        let note = Note(title: title,
-                        text: text,
-                        pinned: pinned,
-                        reminderDate: reminderDate,
-                        creationDate: creationDate,
-                        editDate: editDate)
+        var note: Note!
+        context.performAndWait {
+            note = (NSEntityDescription.insertNewObject(forEntityName: "Note", into: context) as! Note)
+            note.title = title
+            note.text = text
+            note.pinned = pinned
+            note.reminderDate = reminderDate
+            note.creationDate = creationDate
+            note.editDate = editDate
+        }
         
         return note
     }
@@ -232,10 +241,11 @@ struct AnotesApi {
         }
     }
     
-    /// Restore notes from backend
+    /// Fetch data from backend
     /// - Parameter for: user
-    /// - Parameter completion: completion for using fetched notes
-    static func restoreNotes(for user: User, completion: @escaping (AnotesResult) -> Void) {
+    /// - Parameter completion: completion for using fetched data
+    /// - Description: Make request to backend and return last snapshot
+    static func fetchNotesData(for user: User, completion: @escaping (AnotesResult) -> Void) {
         guard let url = self.anotesUrl(endpoint: .restore) else {
             return
         }
@@ -253,8 +263,7 @@ struct AnotesApi {
             
             switch httpResponse.statusCode {
             case 200...299:
-                let fetchResult = self.jsonNotesFromData(data: data)
-                completion(fetchResult)
+                completion(.DataRestoreSuccess(data))
                 return
             case 403:
                 print("Status code: \(httpResponse.statusCode). Token expired? Try to refresh it!")
@@ -264,7 +273,7 @@ struct AnotesApi {
                     case let .AuthSuccess(token):
                         print("Authentication succesful!")
                         user.authToken = token
-                        self.restoreNotes(for: user, completion: completion)
+                        self.fetchNotesData(for: user, completion: completion)
                     default:
                         completion(.Failure(AnotesError.AuthError))
                     }
@@ -281,6 +290,58 @@ struct AnotesApi {
         
         task.resume()
     }
+    
+//    /// Restore notes from backend
+//    /// - Parameter for: user
+//    /// - Parameter completion: completion for using fetched notes
+//    /// - Parameter inContext: CoreData context
+//    /// - Description: Make request to backend and return last snapshot
+//    static func restoreNotes(for user: User, inContext context: NSManagedObjectContext completion: @escaping (AnotesResult) -> Void) {
+//        guard let url = self.anotesUrl(endpoint: .restore) else {
+//            return
+//        }
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = RequestType.GET.rawValue
+//        request.addValue(user.authToken, forHTTPHeaderField: "Authorization")
+//        let task = self.session.dataTask(with: request) {
+//            (data, response, error) in
+//
+//            guard let httpResponse = response as? HTTPURLResponse else {
+//                completion(.Failure(AnotesError.BadResponse))
+//                return
+//            }
+//
+//            switch httpResponse.statusCode {
+//            case 200...299:
+//                let fetchResult = self.notesFrom(data: data, inContext: context)
+//                completion(fetchResult)
+//                return
+//            case 403:
+//                print("Status code: \(httpResponse.statusCode). Token expired? Try to refresh it!")
+//                self.authenticate(username: user.username, password: user.password) {
+//                    (result) in
+//                    switch result {
+//                    case let .AuthSuccess(token):
+//                        print("Authentication succesful!")
+//                        user.authToken = token
+//                        self.restoreNotes(for: user, completion: completion)
+//                    default:
+//                        completion(.Failure(AnotesError.AuthError))
+//                    }
+//                }
+//                return
+//            case 404:
+//                completion(.Failure(AnotesError.NetworkError("")))
+//                return
+//            default:
+//                completion(.Failure(AnotesError.UnknownError("\(NSLocalizedString("Status code:", comment: "Body for Unknown error")) \(httpResponse.statusCode)")))
+//                return
+//            }
+//        }
+//
+//        task.resume()
+//    }
     
     /// Backing up notes to backend
     /// - Parameter for: authenticated user
@@ -347,9 +408,9 @@ struct AnotesApi {
     /// - Parameter note: note for transforming to json
     private static func jsonFromNote(note: Note) -> [String:AnyObject] {
         var noteDict =
-            ["title":note.title!,
-             "text":note.text!,
-             "pinned":String(note.pinned!),
+            ["title":note.title,
+             "text":note.text,
+             "pinned":String(note.pinned),
              "creationDate":dateFormatter.string(from: note.creationDate),
              "editDate":dateFormatter.string(from: note.editDate)]
         
@@ -365,7 +426,10 @@ struct AnotesApi {
         return ["notes": notesDict] as [String:AnyObject]
     }
     
-    private static func jsonNotesFromData(data: Data?) -> AnotesResult {
+    /// Extract note instances from json data representation
+    /// - Parameter data: JSONised data with notes
+    /// - Parameter inContext: CoreData context
+    static func notesFrom(data: Data?, inContext context: NSManagedObjectContext) -> AnotesResult {
         guard let jsonData = data else {
             return .Failure(AnotesError.EmptyJSONData)
         }
@@ -382,10 +446,12 @@ struct AnotesApi {
                         
             var resultNotes = [Note]()
             for note in notesArray {
-                if let note = self.noteFromJSON(object: note) {
+                if let note = self.noteFromJSON(object: note, inContext: context) {
                     resultNotes.append(note)
                 }
             }
+            
+            print(resultNotes)
             
             return .RestoreSuccess(resultNotes)
         }

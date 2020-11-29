@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B282ED70256F78FA0066DFC1 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B282ED6E256F78FA0066DFC1 /* Note+CoreDataClass.swift */; };
+		B282ED71256F78FA0066DFC1 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B282ED6F256F78FA0066DFC1 /* Note+CoreDataProperties.swift */; };
+		B282ED91256F89440066DFC1 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B282ED90256F89440066DFC1 /* CoreDataStack.swift */; };
+		B2E5E94F25646ABF00D485D7 /* AnotesModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2E5E94D25646ABF00D485D7 /* AnotesModel.xcdatamodeld */; };
 		EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */; };
 		EB07E1362543F9C40047792B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1352543F9C40047792B /* AppDelegate.swift */; };
 		EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1372543F9C40047792B /* SceneDelegate.swift */; };
@@ -25,7 +29,6 @@
 		EBB34418254C60800024C9DE /* SettingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB34417254C60800024C9DE /* SettingKeys.swift */; };
 		EBBB851D254481EE0080B18A /* LoginAndRegister.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBB851C254481EE0080B18A /* LoginAndRegister.storyboard */; };
 		EBD2A4842545A12F00A649C3 /* UIRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A4832545A12F00A649C3 /* UIRoundedButton.swift */; };
-		EBD2A49C2545C76800A649C3 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A49B2545C76800A649C3 /* Note.swift */; };
 		EBD2A4A12545C95800A649C3 /* AnotesApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A4A02545C95800A649C3 /* AnotesApi.swift */; };
 		EBD2A4A62545D0F100A649C3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A4A52545D0F100A649C3 /* User.swift */; };
 		EBD2A4AE2546B6A200A649C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2A4AD2546B6A200A649C3 /* LoginViewController.swift */; };
@@ -55,6 +58,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B282ED6E256F78FA0066DFC1 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B282ED6F256F78FA0066DFC1 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B282ED90256F89440066DFC1 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		B2E5E94E25646ABF00D485D7 /* AnotesModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AnotesModel.xcdatamodel; sourceTree = "<group>"; };
 		EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewController.swift; sourceTree = "<group>"; };
 		EB07E1322543F9C40047792B /* ANotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB07E1352543F9C40047792B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,7 +84,6 @@
 		EBB34417254C60800024C9DE /* SettingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingKeys.swift; sourceTree = "<group>"; };
 		EBBB851C254481EE0080B18A /* LoginAndRegister.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginAndRegister.storyboard; sourceTree = "<group>"; };
 		EBD2A4832545A12F00A649C3 /* UIRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundedButton.swift; sourceTree = "<group>"; };
-		EBD2A49B2545C76800A649C3 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		EBD2A4A02545C95800A649C3 /* AnotesApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotesApi.swift; sourceTree = "<group>"; };
 		EBD2A4A52545D0F100A649C3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EBD2A4AD2546B6A200A649C3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +141,7 @@
 		EB07E1342543F9C40047792B /* ANotes */ = {
 			isa = PBXGroup;
 			children = (
+				B2E5E94D25646ABF00D485D7 /* AnotesModel.xcdatamodeld */,
 				EBD2A4992545C74100A649C3 /* api */,
 				EB07E1352543F9C40047792B /* AppDelegate.swift */,
 				EB07E13E2543F9C60047792B /* Assets.xcassets */,
@@ -193,8 +200,10 @@
 		EBD2A49A2545C74B00A649C3 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				EBD2A49B2545C76800A649C3 /* Note.swift */,
+				B282ED6E256F78FA0066DFC1 /* Note+CoreDataClass.swift */,
+				B282ED6F256F78FA0066DFC1 /* Note+CoreDataProperties.swift */,
 				EBD2A4A52545D0F100A649C3 /* User.swift */,
+				B282ED90256F89440066DFC1 /* CoreDataStack.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -344,13 +353,14 @@
 				EBD2A4B62547046100A649C3 /* RegisterViewController.swift in Sources */,
 				EB0D913E254B3C2F000E7DA5 /* NoteDataSource.swift in Sources */,
 				EBD2A4A12545C95800A649C3 /* AnotesApi.swift in Sources */,
-				EBD2A49C2545C76800A649C3 /* Note.swift in Sources */,
+				B282ED71256F78FA0066DFC1 /* Note+CoreDataProperties.swift in Sources */,
 				EB549947254ABBC200F411F4 /* TitleLocalized.swift in Sources */,
 				EB07E1362543F9C40047792B /* AppDelegate.swift in Sources */,
 				EBD88F6125485A890095D6BB /* BarLabelItem.swift in Sources */,
 				EBB34418254C60800024C9DE /* SettingKeys.swift in Sources */,
 				EB0D9143254B3DED000E7DA5 /* NoteTableViewCell.swift in Sources */,
 				EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */,
+				B2E5E94F25646ABF00D485D7 /* AnotesModel.xcdatamodeld in Sources */,
 				EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */,
 				EBD2A4BC254706F400A649C3 /* UserStore.swift in Sources */,
 				EB549942254ABB1000F411F4 /* ButtonLabelLocalized.swift in Sources */,
@@ -358,9 +368,11 @@
 				EBD2A4A62545D0F100A649C3 /* User.swift in Sources */,
 				EBE16F1125486471003DC84A /* NotesTableViewController.swift in Sources */,
 				EBF36AC6254825B500916F74 /* NoteStore.swift in Sources */,
+				B282ED91256F89440066DFC1 /* CoreDataStack.swift in Sources */,
 				EBE0C6F62548673C005C71CD /* MainNavigationController.swift in Sources */,
 				EB54994C254ABBF400F411F4 /* MessagesLocalized.swift in Sources */,
 				EBD2A4AE2546B6A200A649C3 /* LoginViewController.swift in Sources */,
+				B282ED70256F78FA0066DFC1 /* Note+CoreDataClass.swift in Sources */,
 				EB0D9148254B3F5C000E7DA5 /* UserDataSource.swift in Sources */,
 				EB54993D254AAA1400F411F4 /* ErrorMessageLocalized.swift in Sources */,
 			);
@@ -699,6 +711,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B2E5E94D25646ABF00D485D7 /* AnotesModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B2E5E94E25646ABF00D485D7 /* AnotesModel.xcdatamodel */,
+			);
+			currentVersion = B2E5E94E25646ABF00D485D7 /* AnotesModel.xcdatamodel */;
+			path = AnotesModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EB07E12A2543F9C40047792B /* Project object */;
 }

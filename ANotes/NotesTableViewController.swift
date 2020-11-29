@@ -21,7 +21,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
 //            UserDefaults.standard.setValue(false, forKey: SettingKeys.BiometricAuth)
 //        }
 //    }
-    @IBOutlet var lastUpdateDateLabel: BarLabelItem!
+    @IBOutlet var lastRestoreDateLabel: BarLabelItem!
     @IBOutlet var userButton: UIBarButtonItem!
     let operationQueue = OperationQueue()
     var dateFormatter: DateFormatter = {
@@ -38,56 +38,95 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
         self.tableView.delegate = self
         self.currentUser = self.userStore.user
         self.userDataSource.user = self.userStore.user
+        self.currentUser.noteDataSource.noteStore = self.currentUser.noteStore
         self.tableView.dataSource = self.currentUser.noteDataSource
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.updateLastRestoreDate(date: self.currentUser.noteDataSource.lastSyncDate)
-        if self.currentUser.noteDataSource.lastSyncDate == nil {
-            self.syncData(mode: .Restore, successCompletion: nil)
+        self.updateLastBackupDate(date: self.currentUser.noteDataSource.lastBackupDate)
+        if self.currentUser.noteDataSource.lastRestoreDate == nil {
+            self.syncData(mode: .Restore)
+        }
+        else {
+            self.restoreFromLocal()
         }
         
-        if isBiometricAuthEnabled {
-            self.biometricAuthentication()
-        }
+//        if isBiometricAuthEnabled {
+//            self.biometricAuthentication()
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
         
-    /// Update last updated date label
-    /// - Parameter date: Date for display in format: Updated Today at 12:34
-    private func updateLastRestoreDate(date: Date?) {
+    /// Update last backup date label
+    /// - Parameter date: Date for display in format: Last backup Today at 12:34
+    private func updateLastBackupDate(date: Date?) {
         if let date = date {
-            self.lastUpdateDateLabel.date = self.dateFormatter.string(from: date)
+            self.lastRestoreDateLabel.date = self.dateFormatter.string(from: date)
         }
         else {
-            self.lastUpdateDateLabel.date = nil
+            self.lastRestoreDateLabel.date = nil
         }
     }
     
-    /// Restore and backup local storage with backend
-    func syncData(mode: Operation, successCompletion: (() -> Void)?) {
-        let previousStatus = self.lastUpdateDateLabel.text
+    func restoreFromLocal() {
+        self.currentUser.noteStore.restoreNotesFromLocal {
+            (result) in
+            switch result {
+            case let .RestoreSuccess(notesArray):
+                self.currentUser.noteDataSource.notes = notesArray
+                self.notifyReloadData()
+                return
+            case let .Failure(error):
+                self.operationQueue.addOperation {
+                    self.vibrate(occured: .error)
+                }
+                let alert = UIAlertController(title: ErrorTitleLocalized.restoreFromLocalFailed, message: error.localizedDescription, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close restore error alert"), style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            default:
+                self.operationQueue.addOperation {
+                    self.vibrate(occured: .error)
+                }
+                let alert = UIAlertController(title: ErrorTitleLocalized.unknownError, message: ErrorMessageLocalized.unknownError, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close unknown error alert"), style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    /// Restore local storage with backend
+    func syncData(mode: Operation, successCompletion: (() -> Void)? = nil) {
+        let previousStatus = self.lastRestoreDateLabel.text
         switch mode {
         case .Restore:
-            AnotesApi.restoreNotes(for: currentUser) {
+            self.currentUser.noteStore.restoreNotesFromBackend(for: currentUser) {
                 (result) in
                 OperationQueue.main.addOperation {
                     switch result {
                     case let .RestoreSuccess(notesArray):
                         notesArray.forEach{$0.backedUp = true}
                         self.currentUser.noteDataSource.notes = notesArray
-                        self.currentUser.noteDataSource.lastSyncDate = Date()
-                        self.updateLastRestoreDate(date: self.currentUser.noteDataSource.lastSyncDate)
+                        self.currentUser.noteDataSource.lastRestoreDate = Date()
+                        //self.updateLastRestoreDate(date: self.currentUser.noteDataSource.lastSyncDate)
                         self.notifyReloadData()
+                        do {
+                            try self.currentUser.noteStore.coreDataStack.saveChanges()
+                        }
+                        catch let error {
+                            print("Error while saving: \(error)")
+                        }
                         if let safeSuccessCompletion = successCompletion {
                             safeSuccessCompletion()
                         }
                         return
                     case let .Failure(error):
+                        self.operationQueue.addOperation {
+                            self.vibrate(occured: .error)
+                        }
                         switch error {
                         case AnotesError.AuthError:
                             let alert = UIAlertController(title: ErrorTitleLocalized.syncFailed, message: ErrorMessageLocalized.AuthenticationTokenError, preferredStyle: .actionSheet)
@@ -104,11 +143,14 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                             self.present(alert, animated: true, completion: nil)
                         }
                     default:
+                        self.operationQueue.addOperation {
+                            self.vibrate(occured: .error)
+                        }
                         let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close network error alert"), style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     }
-                    self.lastUpdateDateLabel.text = previousStatus
+                    self.lastRestoreDateLabel.text = previousStatus
                 }
             }
         case .Backup:
@@ -120,9 +162,16 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                 OperationQueue.main.addOperation {
                     switch result {
                     case .BackupSuccess:
-                        self.updateLastRestoreDate(date: self.currentUser.noteDataSource.lastSyncDate)
+                        self.currentUser.noteDataSource.lastBackupDate = Date()
+                        self.updateLastBackupDate(date: self.currentUser.noteDataSource.lastBackupDate)
                         indices.forEach{allNotes[$0].backedUp = true}
                         self.notifyReloadData()
+                        do {
+                            try self.currentUser.noteStore.coreDataStack.saveChanges()
+                        }
+                        catch let error {
+                            print("Error while saving: \(error)")
+                        }
                         if let safeSuccessCompletion = successCompletion {
                             safeSuccessCompletion()
                         }
@@ -130,6 +179,9 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                     case let .Failure(error):
                         switch error {
                         case AnotesError.AuthError:
+                            self.operationQueue.addOperation {
+                                self.vibrate(occured: .error)
+                            }
                             let alert = UIAlertController(title: ErrorTitleLocalized.syncFailed, message: ErrorMessageLocalized.AuthenticationTokenError, preferredStyle: .actionSheet)
                             alert.addAction(UIAlertAction(title: ButtonLabelLocalized.cancel, style: .cancel, handler: nil))
                             alert.addAction(UIAlertAction(title: ButtonLabelLocalized.logout, style: .destructive) {
@@ -139,16 +191,22 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                             })
                             self.present(alert, animated: true, completion: nil)
                         default:
+                            self.operationQueue.addOperation {
+                                self.vibrate(occured: .error)
+                            }
                             let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
                             alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close network error alert"), style: .cancel, handler: nil))
                             self.present(alert, animated: true, completion: nil)
                         }
                     default:
+                        self.operationQueue.addOperation {
+                            self.vibrate(occured: .error)
+                        }
                         let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close network error alert"), style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     }
-                    self.lastUpdateDateLabel.text = previousStatus
+                    self.lastRestoreDateLabel.text = previousStatus
                 }
             }
         }
@@ -189,9 +247,10 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
             print("Cannot instantiate LoginViewController")
             return
         }
-        
         self.userDataSource.user = nil
+        self.currentUser.noteStore.resetLocalNotes()
         loginVC.userStore = self.userStore
+        User.resetSession()
         UIView.transition(with: self.view.window!, duration: 0.5, options: UIView.AnimationOptions.transitionFlipFromLeft, animations: {
             self.view.window!.rootViewController = loginVC
         }, completion: nil)
@@ -228,6 +287,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
         case "NewNoteSegue":
             if let destination = segue.destination as? NoteDetailViewController {
                 destination.delegate = self
+                destination.noteStore = self.userStore.user?.noteStore
                 destination.noteDataSource = self.currentUser.noteDataSource
             }
         case "EditNoteSegue":
@@ -250,6 +310,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                     }
                     destination.delegate = self
                     destination.noteDataSource = self.currentUser.noteDataSource
+                    destination.noteStore = self.userStore.user?.noteStore
                     destination.note = note
                 }
             }

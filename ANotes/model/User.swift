@@ -13,6 +13,7 @@ class User: Equatable {
     var fullname: String!
     var authToken: String!
     var noteDataSource: NoteDataSource!
+    var noteStore: NoteStore!
     
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.username == rhs.username
@@ -24,5 +25,42 @@ class User: Equatable {
         self.fullname = fullname
         self.authToken = authToken
         self.noteDataSource = NoteDataSource()
+        self.noteStore = NoteStore()
+    }
+    
+    /// Save user session
+    /// - Parameter user: user for save
+    class func saveSession(for user: User) {
+        // TODO: Move secure-sensitive data to keychain
+        UserDefaults.standard.setValue(user.username, forKey: "username")
+        UserDefaults.standard.setValue(user.password, forKey: "password")
+        UserDefaults.standard.setValue(user.fullname, forKey: "fullname")
+        UserDefaults.standard.setValue(user.authToken, forKey: "authToken")
+    }
+    
+    /// Reset last session
+    class func resetSession() {
+        UserDefaults.standard.removeObject(forKey: "username")
+        UserDefaults.standard.removeObject(forKey: "password")
+        UserDefaults.standard.removeObject(forKey: "fullname")
+        UserDefaults.standard.removeObject(forKey: "authToken")
+        UserDefaults.standard.removeObject(forKey: "LastBackupDate")
+        UserDefaults.standard.removeObject(forKey: "LastRestoreDate")
+    }
+    
+    /// Get last session user
+    /// - Returns: User instance of last saved session
+    class func getLastSessionUser() -> User? {
+        // TODO: Move secure-sensitive data to keychain
+        guard let username = UserDefaults.standard.string(forKey: "username"),
+           let fullname = UserDefaults.standard.string(forKey: "fullname"),
+           let password = UserDefaults.standard.string(forKey: "password"),
+           let authToken = UserDefaults.standard.string(forKey: "authToken") else {
+            
+            return nil
+        }
+        
+        let user = User(username: username, password: password, fullname: fullname, authToken: authToken)
+        return user
     }
 }

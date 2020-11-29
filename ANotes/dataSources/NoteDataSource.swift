@@ -9,7 +9,22 @@ import UIKit
 
 class NoteDataSource: NSObject, UITableViewDataSource {
     var notes = [Note]()
-    var lastSyncDate: Date?
+    var lastRestoreDate: Date? {
+        get {
+            UserDefaults.standard.value(forKey: "LastRestoreDate") as? Date
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "LastRestoreDate")
+        }
+    }
+    var lastBackupDate: Date? {
+        get {
+            UserDefaults.standard.value(forKey: "LastBackupDate") as? Date
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "LastBackupDate")
+        }
+    }
     var notBackedIndices: [Array<Note>.Index] {
         get {
             zip(self.notes.indices, self.notes).compactMap{if !$1.backedUp {return $0} else {return nil}}
@@ -22,6 +37,7 @@ class NoteDataSource: NSObject, UITableViewDataSource {
         formatter.doesRelativeDateFormatting = true
         return formatter
     }()
+    var noteStore: NoteStore!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch self.numberOfSections(in: tableView) {
@@ -95,11 +111,11 @@ class NoteDataSource: NSObject, UITableViewDataSource {
             }
             
             let cell = tableView.cellForRow(at: indexPath) as! NoteTableViewCell
-            let stubNote = Note()
-            stubNote.id = cell.noteId
-            let noteIndex = self.notes.firstIndex(of: stubNote)!
+            let note: Note = cell.note
+            let noteIndex = self.notes.firstIndex(of: note)!
             self.notes.remove(at: noteIndex)
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.noteStore.remove(note: note)
             let notPinnedNotes = self.notes.filter{!$0.pinned}
             if notPinnedNotes.count == 0 && deletableSectionItems == 1 {
                 tableView.reloadSections([deletableSectionItems], with: .automatic)
@@ -135,7 +151,7 @@ class NoteDataSource: NSObject, UITableViewDataSource {
         cell.titleLabel.text = note.title
         cell.contentLabel.text = note.text
         cell.backedUpButton.isHidden = note.backedUp
-        cell.noteId = note.id
+        cell.note = note
         if let reminderDate = note.reminderDate {
             cell.reminderButton.isEnabled = true
             cell.reminderButton.setImage(UIImage(systemName: "alarm.fill"), for: .normal)

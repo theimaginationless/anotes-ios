@@ -65,7 +65,7 @@ class RegisterViewController: UIViewController {
                         break
                     }
                 default:
-                    self.setErrorMessage(message: ErrorMessageLocalized.unknownError)
+                    self.setErrorMessage(message: ErrorTitleLocalized.unknownError + ErrorMessageLocalized.unknownError)
                     break
                 }
                 

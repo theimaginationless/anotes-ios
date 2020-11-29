@@ -11,16 +11,25 @@ protocol NotifyReloadDataDelegate {
     func notifyReloadData()
 }
 
-class NoteDetailViewController: UIViewController {
+class NoteDetailViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var reminderSwitch: UISwitch!
     @IBOutlet var reminderDatePicker: UIDatePicker!
     @IBOutlet var pinnedButton: UIBarButtonItem!
     @IBOutlet var titleTextField: UITextField!
-    @IBOutlet var contentTextField: UITextField!
+    @IBOutlet var contentTextView: UITextView!
     var delegate: NotifyReloadDataDelegate!
     var noteDataSource: NoteDataSource!
+    var noteStore: NoteStore!
     var note: Note!
     var isEdited: Bool = false
+    var oldInset: UIEdgeInsets!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillDismiss(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -35,7 +44,10 @@ class NoteDetailViewController: UIViewController {
         if self.isEdited {
             self.note.editDate = Date()
             self.delegate.notifyReloadData()
+            try? self.noteStore.coreDataStack.saveChanges()
         }
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -44,13 +56,18 @@ class NoteDetailViewController: UIViewController {
         downSwipeGesture.direction = .down
         self.view.addGestureRecognizer(downSwipeGesture)
         if self.note == nil {
-            self.note = Note()
+            self.note = self.noteStore.createNote()
+            self.navigationItem.title = ""
         }
+        else {
+            self.navigationItem.title = self.note.title
+        }
+        
         self.reminderDatePicker.addTarget(self, action: #selector(self.settingReminderDate), for: .valueChanged)
         self.titleTextField.addTarget(self, action: #selector(self.titleChanged(_:)), for: .editingChanged)
-        self.contentTextField.addTarget(self, action: #selector(self.contentChanged(_:)), for: .editingChanged)
+        self.contentTextView.delegate = self
         self.titleTextField.text = self.note.title
-        self.contentTextField.text = self.note.text
+        self.contentTextView.text = self.note.text
         self.pinnedToggler(state: self.note.pinned)
         // Threshold on current date for reminder
         self.reminderDatePicker.minimumDate = Date()
@@ -58,19 +75,50 @@ class NoteDetailViewController: UIViewController {
             self.reminderToggler(state: true)
             self.reminderDatePicker.date = reminderDate
         }
+        
+        self.oldInset = self.contentTextView.contentInset
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue else {
+            return
+        }
+        
+        let keyboardRect = keyboardFrame.cgRectValue
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardRect.height, right: 0)
+        self.contentTextView.contentInset = contentInset
+        self.contentTextView.scrollIndicatorInsets = contentInset
+    }
+    
+    @objc func keyboardWillDismiss(_ notification: Notification) {
+        self.contentTextView.contentInset = self.oldInset
+        self.contentTextView.scrollIndicatorInsets = self.oldInset
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if !textView.text.isEmpty {
+            self.catchContent(text: textView.text)
+        }
     }
     
     @objc func contentChanged(_ textField: UITextField) {
         if !textField.text!.isEmpty {
-            self.note.text = textField.text
+            self.note.text = textField.text!
             self.note.backedUp = false
             self.isEdited = true
         }
     }
     
+    func catchContent(text: String) {
+        self.note.text = text
+        self.note.backedUp = false
+        self.isEdited = true
+    }
+    
     @objc func titleChanged(_ textField: UITextField) {
         if !textField.text!.isEmpty {
-            self.note.title = textField.text
+            self.note.title = textField.text!
             self.note.backedUp = false
             self.isEdited = true
         }
