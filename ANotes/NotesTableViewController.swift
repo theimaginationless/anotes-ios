@@ -8,7 +8,7 @@
 import UIKit
 import LocalAuthentication
 
-class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate {
+class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate, UIPopoverPresentationControllerDelegate {
     var userDataSource = UserDataSource()
     var userStore: UserStore!
     var currentUser: User!
@@ -23,6 +23,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
 //    }
     @IBOutlet var lastRestoreDateLabel: BarLabelItem!
     @IBOutlet var userButton: UIBarButtonItem!
+    @IBOutlet weak var backupButton: UIBarButtonItem!
     let operationQueue = OperationQueue()
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -135,6 +136,9 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                                 
                                 self.logoutWithConfirm()
                             })
+                            if let popoverPresentationController = alert.popoverPresentationController {
+                                self.preparePopoverPresentationFrame(popoverPC: popoverPresentationController, view: self.backupButton.value(forKey: "view") as! UIView, arrowDirection: .down)
+                            }
                             self.present(alert, animated: true, completion: nil)
                         default:
                             let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
@@ -147,6 +151,9 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                         }
                         let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close network error alert"), style: .cancel, handler: nil))
+                        if let popoverPresentationController = alert.popoverPresentationController {
+                            self.preparePopoverPresentationFrame(popoverPC: popoverPresentationController, view: self.backupButton.value(forKey: "view") as! UIView, arrowDirection: .down)
+                        }
                         self.present(alert, animated: true, completion: nil)
                     }
                     self.lastRestoreDateLabel.text = previousStatus
@@ -188,6 +195,9 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                                 
                                 self.logoutWithConfirm()
                             })
+                            if let popoverPresentationController = alert.popoverPresentationController {
+                                self.preparePopoverPresentationFrame(popoverPC: popoverPresentationController, view: self.backupButton.value(forKey: "view") as! UIView, arrowDirection: .down)
+                            }
                             self.present(alert, animated: true, completion: nil)
                         default:
                             self.operationQueue.addOperation {
@@ -195,6 +205,9 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                             }
                             let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
                             alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close network error alert"), style: .cancel, handler: nil))
+                            if let popoverPresentationController = alert.popoverPresentationController {
+                                self.preparePopoverPresentationFrame(popoverPC: popoverPresentationController, view: self.backupButton.value(forKey: "view") as! UIView, arrowDirection: .down)
+                            }
                             self.present(alert, animated: true, completion: nil)
                         }
                     default:
@@ -203,6 +216,9 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
                         }
                         let alert = UIAlertController(title: ErrorTitleLocalized.networkError, message: ErrorMessageLocalized.networkError, preferredStyle: .actionSheet)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok for close network error alert"), style: .cancel, handler: nil))
+                        if let popoverPresentationController = alert.popoverPresentationController {
+                            self.preparePopoverPresentationFrame(popoverPC: popoverPresentationController, view: self.backupButton.value(forKey: "view") as! UIView, arrowDirection: .down)
+                        }
                         self.present(alert, animated: true, completion: nil)
                     }
                     self.lastRestoreDateLabel.text = previousStatus
@@ -228,15 +244,57 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate 
         feedbackGenerator.notificationOccurred(occured)
     }
     
-    func logoutWithConfirm() {
+    @objc func logoutWithConfirm() {
         let wipeAccountAlert = UIAlertController(title: TitleLocalized.confirmLogout, message: MessagesLocalized.wipeAccountMessage, preferredStyle: .actionSheet)
         wipeAccountAlert.addAction(UIAlertAction(title: ButtonLabelLocalized.cancel, style: .cancel, handler: nil))
         wipeAccountAlert.addAction(UIAlertAction(title: ButtonLabelLocalized.confirmWipeAccount, style: .destructive) {
             (action) in
-            
             self.logout()
         })
+        if let popoverPresentationController = wipeAccountAlert.popoverPresentationController {
+            self.preparePopoverPresentationFrame(popoverPC: popoverPresentationController, view: self.navigationItem.rightBarButtonItem!.value(forKey: "view") as! UIView, arrowDirection: .up)
+        }
         self.present(wipeAccountAlert, animated: true, completion: nil)
+    }
+    
+    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
+        let frame = popoverPresentationController.presentingViewController.view.frame
+        let deltaX = frame.height - rect.pointee.midX
+        let deltaY = frame.width - rect.pointee.midY
+        if rect.pointee.maxY < frame.height/2 {
+            rect.pointee = CGRect(x: frame.width - deltaX, y: rect.pointee.maxY, width: 0, height: 0)
+        }
+        else {
+            rect.pointee = CGRect(x: rect.pointee.minX, y: frame.height - deltaY, width: 0, height: 0)
+        }
+    }
+    
+    func preparePopoverPresentationFrame(popoverPC: UIPopoverPresentationController, view: UIView, arrowDirection: UIPopoverArrowDirection) {
+        popoverPC.sourceView = self.view
+        popoverPC.delegate = self
+        let frame = view.frame
+        let convertedFrame = self.view.convert(frame, from: view)
+        var popoverOffsetX: CGFloat
+        var popoverOffsetY: CGFloat
+        switch arrowDirection {
+        case .up:
+            popoverOffsetY = 20
+            popoverOffsetX = CGFloat.zero
+        case .down:
+            popoverOffsetY = -20
+            popoverOffsetX = CGFloat.zero
+        case .left:
+            popoverOffsetX = 20
+            popoverOffsetY = CGFloat.zero
+        case .right:
+            popoverOffsetX = -20
+            popoverOffsetY = CGFloat.zero
+        default:
+            popoverOffsetX = CGFloat.zero
+            popoverOffsetY = CGFloat.zero
+        }
+        popoverPC.sourceRect = CGRect(x: convertedFrame.midX + popoverOffsetX, y: convertedFrame.midY + popoverOffsetY, width: 0, height: 0)
+        popoverPC.permittedArrowDirections = arrowDirection
     }
     
     func logout() {

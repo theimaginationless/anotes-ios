@@ -136,6 +136,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="backupButton" destination="yxf-Mg-PBz" id="vDR-sY-IHx"/>
                         <outlet property="lastRestoreDateLabel" destination="Oeb-TF-FE2" id="Nrw-bp-KLa"/>
                         <outlet property="userButton" destination="pQL-VJ-c2q" id="JGl-Ai-W1L"/>
                     </connections>

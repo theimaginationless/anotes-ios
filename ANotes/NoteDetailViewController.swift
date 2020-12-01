@@ -35,6 +35,7 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
         super.viewWillDisappear(animated)
         if noteDataSource.notes.firstIndex(of: self.note) == nil {
             if self.note.title.isEmpty || self.note.text.isEmpty {
+                self.noteStore.remove(note: self.note)
                 return
             }
             
