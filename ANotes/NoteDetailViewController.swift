@@ -93,8 +93,10 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func keyboardWillDismiss(_ notification: Notification) {
-        self.contentTextView.contentInset = self.oldInset
-        self.contentTextView.scrollIndicatorInsets = self.oldInset
+        UIView.animate(withDuration: 0.3) {
+            self.contentTextView.contentInset = self.oldInset
+            self.contentTextView.scrollIndicatorInsets = self.oldInset
+        }
     }
     
     func textViewDidChange(_ textView: UITextView) {

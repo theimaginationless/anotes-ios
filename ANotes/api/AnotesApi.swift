@@ -391,7 +391,7 @@ struct AnotesApi {
                 let notesArray = notes as? [[String:AnyObject]] else {
                 return .Failure(AnotesError.InvalidJSONFormat)
             }
-                        
+            
             var resultNotes = [Note]()
             for note in notesArray {
                 if let note = self.noteFromJSON(object: note, inContext: context) {

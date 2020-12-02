@@ -70,7 +70,6 @@ class NoteStore {
                 let objects = try mainQueueContext.fetch(fetchRequest)
                 for managedObject in objects {
                     let managedObjectData = managedObject as! NSManagedObject
-                    print("Deleting \(managedObjectData as! Note)")
                     mainQueueContext.delete(managedObjectData)
                 }
                 

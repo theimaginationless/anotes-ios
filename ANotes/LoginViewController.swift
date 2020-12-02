@@ -94,11 +94,6 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
     /// - Parameter user: user for log in
     func login(for user: User) {
         self.userStore.user = user
-        if self.usernameTextField.text!.isEmpty && self.passwordTextField.text!.isEmpty {
-            self.usernameTextField.text = user.username
-            self.passwordTextField.text = user.password
-        }
-        
         User.saveSession(for: user)
         self.showNotesTableViewControllerWith(userStore: self.userStore)
     }
@@ -123,6 +118,7 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
         self.setTextFieldWithAnimation(text: self.userStore.user!.username, field: self.usernameTextField, animationDuring: 0.3)
         self.setTextFieldWithAnimation(text: self.userStore.user!.password, field: self.passwordTextField, animationDuring: 0.3)
         self.loginButton.isEnabled = true
+        User.saveSession(for: user)
         self.showNotesTableViewControllerWith(userStore: self.userStore)
     }
     
