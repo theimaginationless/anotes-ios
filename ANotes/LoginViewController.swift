@@ -120,10 +120,18 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
     func backWithLogin(for user: User) {
         self.loginButton.isEnabled = false
         self.userStore.user = user
-        self.usernameTextField.text = user.username
-        self.passwordTextField.text = user.password
+        self.setTextFieldWithAnimation(text: self.userStore.user!.username, field: self.usernameTextField, animationDuring: 0.3)
+        self.setTextFieldWithAnimation(text: self.userStore.user!.password, field: self.passwordTextField, animationDuring: 0.3)
         self.loginButton.isEnabled = true
         self.showNotesTableViewControllerWith(userStore: self.userStore)
+    }
+    
+    func setTextFieldWithAnimation(text: String, field: UITextField, animationDuring: TimeInterval) {
+        UIView.transition(with: self.usernameTextField, duration: 0.3, options: .transitionCrossDissolve) {
+            for character in text {
+                field.text!.append(character)
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

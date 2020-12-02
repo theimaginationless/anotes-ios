@@ -382,6 +382,13 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
     
     func reloadData() {
         self.currentUser.noteDataSource.notes.sort{$0.editDate > $1.editDate}
+        if self.currentUser.noteDataSource.notes.count == 0 {
+            self.backupButton.isEnabled = false
+        }
+        else {
+            self.backupButton.isEnabled = true
+        }
+        
         self.tableView.reloadData()
     }
     
