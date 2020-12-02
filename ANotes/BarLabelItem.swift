@@ -21,7 +21,7 @@ class BarLabelItem: UIBarButtonItem {
     
     @IBInspectable var text: String? {
         set {
-            UIView.animate(withDuration: 0.3) {
+            UIView.transition(with: self.label, duration: 0.3, options: .transitionCrossDissolve) {
                 self.label?.text = newValue
                 self.label?.sizeToFit()
             }
@@ -33,7 +33,7 @@ class BarLabelItem: UIBarButtonItem {
     
     @IBInspectable var date: String? {
         set {
-            UIView.animate(withDuration: 0.3) {
+            UIView.transition(with: self.label, duration: 0.3, options: .transitionCrossDissolve) {
                 if let text = newValue {
                     self.label?.text = "\(self.prefix!) \(text)"
                 }
