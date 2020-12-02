@@ -93,8 +93,17 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
     /// Method for log in specified user and go to main application ViewController
     /// - Parameter user: user for log in
     func login(for user: User) {
-        userStore.user = user
+        self.userStore.user = user
+        if self.usernameTextField.text!.isEmpty && self.passwordTextField.text!.isEmpty {
+            self.usernameTextField.text = user.username
+            self.passwordTextField.text = user.password
+        }
+        
         User.saveSession(for: user)
+        self.showNotesTableViewControllerWith(userStore: self.userStore)
+    }
+    
+    func showNotesTableViewControllerWith(userStore: UserStore) {
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
               let notesVC = mainNC.children.first as? NotesTableViewController else {
@@ -102,10 +111,19 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
             return
         }
         
-        notesVC.userStore = self.userStore
+        notesVC.userStore = userStore
         mainNC.modalPresentationStyle = .fullScreen
         mainNC.modalTransitionStyle = .flipHorizontal
         self.present(mainNC, animated: true)
+    }
+    
+    func backWithLogin(for user: User) {
+        self.loginButton.isEnabled = false
+        self.userStore.user = user
+        self.usernameTextField.text = user.username
+        self.passwordTextField.text = user.password
+        self.loginButton.isEnabled = true
+        self.showNotesTableViewControllerWith(userStore: self.userStore)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

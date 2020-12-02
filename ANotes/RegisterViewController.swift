@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ContinuousLoginDelegate {
-    func login(for: User)
+    func backWithLogin(for: User)
 }
 
 class RegisterViewController: UIViewController {
@@ -53,7 +53,7 @@ class RegisterViewController: UIViewController {
                     self.userStore.user = user
                     usleep(20)
                     self.dismiss(animated: true) {
-                        self.continuousLoginDelegate.login(for: user)
+                        self.continuousLoginDelegate.backWithLogin(for: user)
                     }
                 case let .Failure(error):
                     switch error {
