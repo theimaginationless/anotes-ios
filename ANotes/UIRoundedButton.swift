@@ -24,7 +24,7 @@ class UIRoundedButton: UIButton {
     
     override var isEnabled: Bool {
         didSet {
-            UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve) {
+            UIView.animate(withDuration: 0.3) {
                 if self.isEnabled {
                     self.alpha = 1.0
                     self.disableIndicator()
