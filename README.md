@@ -13,8 +13,8 @@ iOS client for backend notes backup service: [link](https://github.com/ArcNotes/
 - [x] Create new notes
 - [x] Pinned notes
 - [x] Logout from account
-- [ ] FaceID lock — implemented, but disabled. Need realize pass-code lock for support this feature fully.
-- [ ] Pass-code lock
+- [x] FaceID lock ~~— implemented, but disabled. Need realize pass-code lock for support this feature fully.~~
+- [x] Pass-code lock
 - [ ] Store sensitive authentication data from UserDefaults to KeyChain
 - [ ] Reminder notification
 - [ ] Search by notes
