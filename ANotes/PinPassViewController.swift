@@ -9,10 +9,9 @@ import UIKit
 import LocalAuthentication
 
 @objc protocol ApplicationLockBiometricAuthenticationDelegate {
-    func biometricAuthentication()
     func setSuccessedUnlock()
     func setPasscode(passcode: String)
-    @objc optional func completionIfSuccess(vc: UIViewController)
+    @objc optional func completionIfSuccess(vc: UIViewController?)
 }
 
 class PinPassViewController: UIViewController {

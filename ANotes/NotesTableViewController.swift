@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import LocalAuthentication
 
 class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate, UIPopoverPresentationControllerDelegate, ApplicationLockBiometricAuthenticationDelegate {
     var userDataSource = UserDataSource()
@@ -21,14 +20,6 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
             UserDefaults.standard.setValue(newValue, forKey: "AlreadyUsing")
         }
     }
-//    var isBiometricAuthEnabled: Bool {
-//        get {
-//            UserDefaults.standard.bool(forKey: SettingKeys.BiometricAuth)
-//        }
-//        set {
-//            UserDefaults.standard.setValue(false, forKey: SettingKeys.BiometricAuth)
-//        }
-//    }
     @IBOutlet var lastRestoreDateLabel: BarLabelItem!
     @IBOutlet var userButton: UIBarButtonItem!
     @IBOutlet weak var backupButton: UIBarButtonItem!
@@ -60,10 +51,6 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
         else {
             self.restoreFromLocal()
         }
-        
-//        if isBiometricAuthEnabled {
-//            self.biometricAuthentication()
-//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -352,32 +339,6 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
     
     func setSuccessedUnlock() {
         self.currentUser.unlocked = true
-    }
-    
-    func biometricAuthentication() {
-        guard #available(iOS 8.0, *) else {
-            return
-        }
-        
-        let context = LAContext()
-        var error: NSError?
-        
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            return
-        }
-        
-        self.securedViewCover(enable: true)
-        let reason = "Typically run application"
-        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
-            isAuthorized, error in
-            guard isAuthorized == true else {
-                return
-            }
-            
-            OperationQueue.main.addOperation {
-                self.securedViewCover(enable: false)
-            }
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

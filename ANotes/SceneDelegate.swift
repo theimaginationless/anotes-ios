@@ -10,9 +10,6 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometricAuthenticationDelegate {
     var isUnlocked: Bool?
     var userStore: UserStore!
-    func biometricAuthentication() {
-        //
-    }
     
     func setSuccessedUnlock() {
         self.userStore.user?.unlocked = true
@@ -22,8 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
         User.passcode = passcode
     }
     
-    func completionIfSuccess(vc: UIViewController) {
-        self.userStore.user?.unlocked = true
+    func completionIfSuccess(vc: UIViewController?) {
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
               let notesVC = mainNC.children.first as? NotesTableViewController else {
@@ -32,11 +28,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
         }
         
         notesVC.userStore = self.userStore
-        mainNC.modalPresentationStyle = .fullScreen
-        mainNC.modalTransitionStyle = .flipHorizontal
-        //self.window?.rootViewController?.present(mainNC, animated: true)
         UIView.transition(with: self.window!, duration: 0.5, options: .transitionFlipFromRight, animations: {
-            self.window?.rootViewController = mainNC
+            self.window!.rootViewController = mainNC
         })
     }
     
@@ -49,8 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
-        let userStore = UserStore()
-        self.userStore = userStore
+        self.userStore = UserStore()
         if let user = User.getLastSessionUser() {
             userStore.user = user
             if User.appLocked {
@@ -62,20 +54,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
                 
                 pinPassVC.originPasscode = User.passcode
                 pinPassVC.setUp = false
-                pinPassVC.userStore = userStore
+                pinPassVC.userStore = self.userStore
                 pinPassVC.delegate = self
-                self.window?.rootViewController = pinPassVC
-                return
+                self.window!.rootViewController = pinPassVC
             }
-            
-            let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
-                  let notesVC = mainNC.children.first as? NotesTableViewController else {
-                print("Error when instantiate mainNC and notesVC")
-                return
+            else {
+                let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as?     MainNavigationController,
+                    let notesVC = mainNC.children.first as? NotesTableViewController else {
+                    print("Error when instantiate mainNC and notesVC")
+                    return
+                }
+                notesVC.userStore = userStore
+                self.window!.rootViewController = mainNC
             }
-            notesVC.userStore = userStore
-            self.window?.rootViewController = mainNC
         }
         else {
             let loginVC = window!.rootViewController as! LoginViewController
