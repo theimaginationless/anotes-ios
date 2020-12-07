@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 @objc protocol ApplicationLockBiometricAuthenticationDelegate {
     func biometricAuthentication()
@@ -36,6 +37,20 @@ class PinPassViewController: UIViewController {
         if self.setUp {
             self.faceIDButton.alpha = .zero
         }
+        else {
+            guard #available(iOS 8.0, *) else {
+                self.faceIDButton.alpha = .zero
+                return
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !self.setUp {
+            self.biometricAuthentication()
+        }
     }
     
     /// Append character to passcode field
@@ -55,7 +70,32 @@ class PinPassViewController: UIViewController {
         }
     }
     
+    private func biometricAuthentication() {
+        guard #available(iOS 8.0, *) else {
+            return
+        }
+        let context = LAContext()
+        var error: NSError?
+        
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            return
+        }
+        
+        let reason = NSLocalizedString("Needs for unlock application", comment: "Reason FaceID using request")
+        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
+            isAuthorized, error in
+            guard isAuthorized == true else {
+                return
+            }
+            
+            OperationQueue.main.addOperation {
+                self.allChecksPassed()
+            }
+        }
+    }
+    
     @IBAction func faceIdButton(_ sender: Any) {
+        self.biometricAuthentication()
     }
     
     @IBAction func deleteButton(_ sender: Any) {
@@ -132,6 +172,10 @@ class PinPassViewController: UIViewController {
             }
         }
         
+        self.allChecksPassed()
+    }
+    
+    private func allChecksPassed() {
         self.delegate?.setSuccessedUnlock()
         self.delegate?.setPasscode(passcode: self.originPasscode!)
         self.dismiss(animated: true) {

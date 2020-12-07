@@ -34,7 +34,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
         notesVC.userStore = self.userStore
         mainNC.modalPresentationStyle = .fullScreen
         mainNC.modalTransitionStyle = .flipHorizontal
-        self.window?.rootViewController?.present(mainNC, animated: true)
+        //self.window?.rootViewController?.present(mainNC, animated: true)
+        UIView.transition(with: self.window!, duration: 0.5, options: .transitionFlipFromRight, animations: {
+            self.window?.rootViewController = mainNC
+        })
     }
     
 
@@ -48,7 +51,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
         guard let _ = (scene as? UIWindowScene) else { return }
         let userStore = UserStore()
         self.userStore = userStore
-        print("\(User.passcode) \(User.appLocked)")
         if let user = User.getLastSessionUser() {
             userStore.user = user
             if User.appLocked {
