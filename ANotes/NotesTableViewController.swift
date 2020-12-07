@@ -8,11 +8,19 @@
 import UIKit
 import LocalAuthentication
 
-class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate, UIPopoverPresentationControllerDelegate {
+class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate, UIPopoverPresentationControllerDelegate, ApplicationLockBiometricAuthenticationDelegate {
     var userDataSource = UserDataSource()
     var userStore: UserStore!
     var currentUser: User!
     let isBiometricAuthEnabled = true
+    var alreadyUsing: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: "AlreadyUsing")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "AlreadyUsing")
+        }
+    }
 //    var isBiometricAuthEnabled: Bool {
 //        get {
 //            UserDefaults.standard.bool(forKey: SettingKeys.BiometricAuth)
@@ -60,6 +68,10 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if !self.alreadyUsing {
+            self.firstStart()
+            self.alreadyUsing = true
+        }
     }
         
     /// Update last backup date label
@@ -71,6 +83,26 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
         else {
             self.lastRestoreDateLabel.date = nil
         }
+    }
+    
+    func firstStart() {
+        let appLockSetupAlert = UIAlertController(title: "Application lock", message: "Can you set up pass code for accessing to this application?", preferredStyle: .alert)
+        let acceptLockSetup = UIAlertAction(title: "Yes", style: .default) {
+            (action) in
+            let pinPassStoryBoard = UIStoryboard(name: "PinPass", bundle: nil)
+            guard let pinPassVC = pinPassStoryBoard.instantiateViewController(identifier: "PinPassViewController") as? PinPassViewController else {
+                print("Instantiate 'PinPassViewController' from 'PinPass' storyboard failed.")
+                return
+            }
+            pinPassVC.modalPresentationStyle = .fullScreen
+            pinPassVC.setUp = true
+            pinPassVC.delegate = self
+            self.present(pinPassVC, animated: true, completion: nil)
+        }
+        appLockSetupAlert.addAction(acceptLockSetup)
+        let declineLockSetup = UIAlertAction(title: "No", style: .cancel)
+        appLockSetupAlert.addAction(declineLockSetup)
+        self.present(appLockSetupAlert, animated: true)
     }
     
     func restoreFromLocal() {
@@ -311,6 +343,15 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
         UIView.transition(with: self.view.window!, duration: 0.5, options: UIView.AnimationOptions.transitionFlipFromLeft, animations: {
             self.view.window!.rootViewController = loginVC
         }, completion: nil)
+    }
+    
+    func setPasscode(passcode: String) {
+        User.passcode = passcode
+        User.appLocked = true
+    }
+    
+    func setSuccessedUnlock() {
+        self.currentUser.unlocked = true
     }
     
     func biometricAuthentication() {

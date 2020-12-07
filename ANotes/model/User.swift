@@ -12,6 +12,23 @@ class User: Equatable {
     var password: String!
     var fullname: String!
     var authToken: String!
+    var unlocked: Bool?
+    class var appLocked: Bool {
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "AppLocked")
+        }
+        get {
+            UserDefaults.standard.bool(forKey: "AppLocked")
+        }
+    }
+    class var passcode: String? {
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "passcode")
+        }
+        get {
+            UserDefaults.standard.string(forKey: "passcode")
+        }
+    }
     var noteDataSource: NoteDataSource!
     var noteStore: NoteStore!
     
@@ -46,6 +63,9 @@ class User: Equatable {
         UserDefaults.standard.removeObject(forKey: "authToken")
         UserDefaults.standard.removeObject(forKey: "LastBackupDate")
         UserDefaults.standard.removeObject(forKey: "LastRestoreDate")
+        UserDefaults.standard.removeObject(forKey: "AlreadyUsing")
+        self.appLocked = false
+        self.passcode = nil
     }
     
     /// Get last session user

@@ -7,7 +7,36 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometricAuthenticationDelegate {
+    var isUnlocked: Bool?
+    var userStore: UserStore!
+    func biometricAuthentication() {
+        //
+    }
+    
+    func setSuccessedUnlock() {
+        self.userStore.user?.unlocked = true
+    }
+    
+    func setPasscode(passcode: String) {
+        User.passcode = passcode
+    }
+    
+    func completionIfSuccess(vc: UIViewController) {
+        self.userStore.user?.unlocked = true
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
+              let notesVC = mainNC.children.first as? NotesTableViewController else {
+            print("Error when instantiate mainNC and notesVC")
+            return
+        }
+        
+        notesVC.userStore = self.userStore
+        mainNC.modalPresentationStyle = .fullScreen
+        mainNC.modalTransitionStyle = .flipHorizontal
+        self.window?.rootViewController?.present(mainNC, animated: true)
+    }
+    
 
     var window: UIWindow?
 
@@ -18,8 +47,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         let userStore = UserStore()
+        self.userStore = userStore
+        print("\(User.passcode) \(User.appLocked)")
         if let user = User.getLastSessionUser() {
             userStore.user = user
+            if User.appLocked {
+                let pinPassStoryBoard = UIStoryboard(name: "PinPass", bundle: nil)
+                guard let pinPassVC = pinPassStoryBoard.instantiateViewController(identifier: "PinPassViewController") as? PinPassViewController else {
+                    print("Instantiate 'PinPassViewController' from 'PinPass' storyboard failed.")
+                    return
+                }
+                
+                pinPassVC.originPasscode = User.passcode
+                pinPassVC.setUp = false
+                pinPassVC.userStore = userStore
+                pinPassVC.delegate = self
+                self.window?.rootViewController = pinPassVC
+                return
+            }
+            
             let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
             guard let mainNC = mainStoryboard.instantiateViewController(identifier: "MainNavigationController") as? MainNavigationController,
                   let notesVC = mainNC.children.first as? NotesTableViewController else {
@@ -34,6 +80,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             loginVC.userStore = userStore
         }
     }
+    
+    
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

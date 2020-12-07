@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bSM-WU-Mt9">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Pin Pass View Controller-->
+        <scene sceneID="HPm-Tr-KMv">
+            <objects>
+                <viewController storyboardIdentifier="PinPassViewController" id="bSM-WU-Mt9" customClass="PinPassViewController" customModule="ANotes" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rFg-2S-bjs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Lkr-FW-rCX">
+                                <rect key="frame" x="58" y="454" width="298" height="300"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="rj7-9P-tI2">
+                                        <rect key="frame" x="0.0" y="0.0" width="298" height="67.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVU-HL-1dk">
+                                                <rect key="frame" x="0.0" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="1">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="50"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="oneDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="6KD-QJ-5Nl"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kF-2x-4ik">
+                                                <rect key="frame" x="106" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="2">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="50"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="twoDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="pPo-Fz-NEj"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nca-9c-uEw">
+                                                <rect key="frame" x="212" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="3">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="50"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="threeDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="OfH-tw-Prs"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="jSz-XG-GBY">
+                                        <rect key="frame" x="0.0" y="77.5" width="298" height="67.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Puu-dV-WRW">
+                                                <rect key="frame" x="0.0" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="4">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="fourDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="Kvn-fr-8Iv"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aC-on-pCX">
+                                                <rect key="frame" x="106" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="5">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="fiveDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="GP7-MI-D3K"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5P-xA-ZSX">
+                                                <rect key="frame" x="212" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="6">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="sixDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="z8q-83-wOQ"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="q2o-bj-9KV">
+                                        <rect key="frame" x="0.0" y="155" width="298" height="67.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LN7-S0-dkc">
+                                                <rect key="frame" x="0.0" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="7">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="sevenDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="L1A-q0-iFf"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SEU-LR-07n">
+                                                <rect key="frame" x="106" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="8">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="eightDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="PVL-Sv-rqL"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fs-ge-6VW">
+                                                <rect key="frame" x="212" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="9">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="nineDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="dmY-bi-AZe"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RYT-mh-brP">
+                                        <rect key="frame" x="0.0" y="232.5" width="298" height="67.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nFU-He-P4J" userLabel="FaceID">
+                                                <rect key="frame" x="0.0" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                                <state key="normal">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                    <imageReference key="image" image="faceid" catalog="system" symbolScale="large"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="faceIdButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="Iwf-pM-gjH"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKT-TI-FXo">
+                                                <rect key="frame" x="106" y="0.0" width="86" height="67.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <state key="normal" title="0">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="zeroDigitButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="dFC-aA-p2l"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4k-pq-7eb" userLabel="Delete">
+                                                <rect key="frame" x="212" y="0.0" width="86" height="67.5"/>
+                                                <state key="normal">
+                                                    <color key="titleColor" name="FontColor"/>
+                                                    <imageReference key="image" image="delete.left" catalog="system" symbolScale="large"/>
+                                                </state>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Delete"/>
+                                                </attributedString>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="deleteButton:" destination="bSM-WU-Mt9" eventType="touchUpInside" id="Kel-kI-Arr"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="298" id="AuS-EF-EED"/>
+                                    <constraint firstAttribute="height" constant="300" id="eO7-8e-D1R"/>
+                                </constraints>
+                            </stackView>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x6J-Ay-lJV" userLabel="Pin">
+                                <rect key="frame" x="98" y="308" width="218" height="46"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="PRZ-D7-4bb"/>
+                                    <constraint firstAttribute="height" constant="46" id="eNd-Is-6o0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="7s5-8T-w8C"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Lkr-FW-rCX" firstAttribute="top" secondItem="x6J-Ay-lJV" secondAttribute="bottom" priority="995" constant="100" id="20q-y2-Zvm"/>
+                            <constraint firstItem="x6J-Ay-lJV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7s5-8T-w8C" secondAttribute="top" priority="998" constant="105" id="FLG-bq-n8P"/>
+                            <constraint firstItem="Lkr-FW-rCX" firstAttribute="centerX" secondItem="7s5-8T-w8C" secondAttribute="centerX" id="GGj-Df-aP1"/>
+                            <constraint firstItem="x6J-Ay-lJV" firstAttribute="trailing" secondItem="Lkr-FW-rCX" secondAttribute="trailing" constant="-40" id="Ogb-mB-6RH"/>
+                            <constraint firstItem="Lkr-FW-rCX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="x6J-Ay-lJV" secondAttribute="bottom" priority="999" constant="30" id="QXL-ZZ-wpf"/>
+                            <constraint firstItem="7s5-8T-w8C" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Lkr-FW-rCX" secondAttribute="bottom" priority="994" constant="300" id="RWY-WL-7pS"/>
+                            <constraint firstItem="x6J-Ay-lJV" firstAttribute="centerX" secondItem="7s5-8T-w8C" secondAttribute="centerX" id="VGU-Kw-G7r"/>
+                            <constraint firstItem="x6J-Ay-lJV" firstAttribute="centerY" secondItem="7s5-8T-w8C" secondAttribute="centerY" priority="995" constant="-122" id="ZhJ-WT-B6D"/>
+                            <constraint firstItem="7s5-8T-w8C" firstAttribute="bottom" secondItem="Lkr-FW-rCX" secondAttribute="bottom" priority="995" constant="8" id="dZ5-gr-d4y"/>
+                            <constraint firstItem="x6J-Ay-lJV" firstAttribute="leading" secondItem="Lkr-FW-rCX" secondAttribute="leading" constant="40" id="fQ2-i3-DM6"/>
+                            <constraint firstItem="7s5-8T-w8C" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Lkr-FW-rCX" secondAttribute="trailing" constant="8" id="o07-JB-uiI"/>
+                            <constraint firstItem="Lkr-FW-rCX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7s5-8T-w8C" secondAttribute="leading" constant="8" id="qXe-gI-MaJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="deleteButton" destination="U4k-pq-7eb" id="rCS-mU-7BM"/>
+                        <outlet property="faceIDButton" destination="nFU-He-P4J" id="BS0-Fp-A2s"/>
+                        <outlet property="pinTextField" destination="x6J-Ay-lJV" id="4nq-Ja-0ZX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iI4-fK-VUO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-371.01449275362324" y="-330.13392857142856"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="delete.left" catalog="system" width="128" height="104"/>
+        <image name="faceid" catalog="system" width="128" height="115"/>
+        <namedColor name="FontColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
