@@ -42,12 +42,7 @@ class PinPassViewController: UIViewController {
                 return
             }
             
-            if !Utils.checkAvailableBiometryAuthentication(for: .deviceOwnerAuthenticationWithBiometrics) {
-                self.faceIDButton.isEnabled = false
-            }
-            else {
-                self.faceIDButton.isEnabled = true
-            }
+            self.faceIDButton.isEnabled = Utils.checkAvailableBiometryAuthentication(for: .deviceOwnerAuthenticationWithBiometrics)
         }
     }
     
@@ -75,8 +70,6 @@ class PinPassViewController: UIViewController {
             }
         }
     }
-    
-    
     
     private func biometricAuthentication() {
         guard #available(iOS 8.0, *) else {
