@@ -11,7 +11,7 @@
         <!--Main Navigation Controller-->
         <scene sceneID="a4M-9k-h2i">
             <objects>
-                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="WAA-Dd-wSn" customClass="MainNavigationController" customModule="ANotes" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" toolbarHidden="NO" id="WAA-Dd-wSn" customClass="MainNavigationController" customModule="ANotes" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="VKo-EB-KcL">

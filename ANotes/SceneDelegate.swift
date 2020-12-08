@@ -10,6 +10,10 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometricAuthenticationDelegate {
     var isUnlocked: Bool?
     var userStore: UserStore!
+    // Workaround for prevent initialization scene and create ViewControllers when application
+    // has been closed after run in shortly time.
+    // Started use FaceID we faced with blinking FaceID view after swipe application from runs.
+    static var viewCreationPermit: Bool! = true
     
     func setSuccessedUnlock() {
         self.userStore.user?.unlocked = true
@@ -38,10 +42,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        print(#function)
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        guard SceneDelegate.viewCreationPermit == true else {return}
         self.userStore = UserStore()
         if let user = User.getLastSessionUser() {
             userStore.user = user
@@ -85,11 +91,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
+        SceneDelegate.viewCreationPermit = true
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
+        SceneDelegate.viewCreationPermit = false
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
