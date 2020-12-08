@@ -13,6 +13,7 @@
 		B282ED71256F78FA0066DFC1 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B282ED6F256F78FA0066DFC1 /* Note+CoreDataProperties.swift */; };
 		B282ED91256F89440066DFC1 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B282ED90256F89440066DFC1 /* CoreDataStack.swift */; };
 		B2E5E94F25646ABF00D485D7 /* AnotesModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2E5E94D25646ABF00D485D7 /* AnotesModel.xcdatamodeld */; };
+		B2F10F02257F6F82009F8953 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F10F01257F6F82009F8953 /* Utils.swift */; };
 		EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */; };
 		EB07E1362543F9C40047792B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1352543F9C40047792B /* AppDelegate.swift */; };
 		EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1372543F9C40047792B /* SceneDelegate.swift */; };
@@ -66,6 +67,7 @@
 		B282ED6F256F78FA0066DFC1 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B282ED90256F89440066DFC1 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		B2E5E94E25646ABF00D485D7 /* AnotesModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AnotesModel.xcdatamodel; sourceTree = "<group>"; };
+		B2F10F01257F6F82009F8953 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewController.swift; sourceTree = "<group>"; };
 		EB07E1322543F9C40047792B /* ANotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB07E1352543F9C40047792B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				EBB34412254C5F120024C9DE /* Settings.bundle */,
 				EBD2A4BA254706E500A649C3 /* stores */,
 				EBD2A4832545A12F00A649C3 /* UIRoundedButton.swift */,
+				B2F10F01257F6F82009F8953 /* Utils.swift */,
 			);
 			path = ANotes;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				EB549935254AA67700F411F4 /* ErrorTitleLocalized.swift in Sources */,
 				EBD2A4B62547046100A649C3 /* RegisterViewController.swift in Sources */,
 				EB0D913E254B3C2F000E7DA5 /* NoteDataSource.swift in Sources */,
+				B2F10F02257F6F82009F8953 /* Utils.swift in Sources */,
 				EBD2A4A12545C95800A649C3 /* AnotesApi.swift in Sources */,
 				B282ED71256F78FA0066DFC1 /* Note+CoreDataProperties.swift in Sources */,
 				EB549947254ABBC200F411F4 /* TitleLocalized.swift in Sources */,
