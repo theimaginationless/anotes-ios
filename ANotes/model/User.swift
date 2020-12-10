@@ -16,6 +16,7 @@ class User: Equatable {
     class var appLocked: Bool {
         set {
             UserDefaults.standard.setValue(newValue, forKey: "AppLocked")
+            UserDefaults.standard.synchronize()
         }
         get {
             UserDefaults.standard.bool(forKey: "AppLocked")
@@ -24,6 +25,7 @@ class User: Equatable {
     class var passcode: String? {
         set {
             UserDefaults.standard.setValue(newValue, forKey: "passcode")
+            UserDefaults.standard.synchronize()
         }
         get {
             UserDefaults.standard.string(forKey: "passcode")
@@ -53,6 +55,7 @@ class User: Equatable {
         UserDefaults.standard.setValue(user.password, forKey: "password")
         UserDefaults.standard.setValue(user.fullname, forKey: "fullname")
         UserDefaults.standard.setValue(user.authToken, forKey: "authToken")
+        UserDefaults.standard.synchronize()
     }
     
     /// Reset last session
@@ -64,6 +67,7 @@ class User: Equatable {
         UserDefaults.standard.removeObject(forKey: "LastBackupDate")
         UserDefaults.standard.removeObject(forKey: "LastRestoreDate")
         UserDefaults.standard.removeObject(forKey: "AlreadyUsing")
+        UserDefaults.standard.synchronize()
         self.appLocked = false
         self.passcode = nil
     }

@@ -22,4 +22,20 @@ class Utils {
         
         return result
     }
+    
+    class func keyboardFrame(_ notification: Notification) -> CGRect? {
+        guard let userInfo = notification.userInfo,
+              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return nil
+        }
+        
+        let keyboardFrame = keyboardSize.cgRectValue
+        return keyboardFrame
+    }
+    
+    class func calculateViewByKeyboardDeltaY(sourceView: UIView, targetView: UIView, keyboardFrame: CGRect, padding: CGFloat = 0) -> CGFloat {
+        let textFieldCoords = targetView.convert(sourceView.frame, from: sourceView)
+        let deltaY = textFieldCoords.maxY - keyboardFrame.minY + padding
+        return deltaY
+    }
 }

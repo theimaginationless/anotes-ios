@@ -7,11 +7,12 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, ContinuousLoginDelegate {
+class LoginViewController: UIViewController, ContinuousLoginDelegate, UITextFieldDelegate {
     @IBOutlet var usernameTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var loginButton: UIRoundedButton!
     var userStore: UserStore!
+    var currentEditedTextField: UITextField?
     override open var shouldAutorotate: Bool {
         return false
     }
@@ -21,17 +22,26 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
         let dismissKeyboardGesture = UISwipeGestureRecognizer(target: self, action: #selector(hideKeyboard))
         dismissKeyboardGesture.direction = .down
         self.view.addGestureRecognizer(dismissKeyboardGesture)
+        self.usernameTextField.delegate = self
+        self.passwordTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillDismiss(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    @IBAction func loginButtonAction(_ sender: Any) {
+    @IBAction func loginButtonAction(_ sender: Any? = nil) {
         self.hideKeyboard()
         
         guard
@@ -48,6 +58,43 @@ class LoginViewController: UIViewController, ContinuousLoginDelegate {
         }
         
         self.authenticateWith(username: username, password: password)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField.returnKeyType {
+        case .next:
+            self.usernameTextField.resignFirstResponder()
+            self.passwordTextField.becomeFirstResponder()
+        case .join:
+            self.passwordTextField.resignFirstResponder()
+            self.loginButtonAction()
+        default:
+            break
+        }
+        
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.currentEditedTextField = textField
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = Utils.keyboardFrame(notification),
+              let textField = self.currentEditedTextField else {
+            return
+        }
+        
+        let deltaY = Utils.calculateViewByKeyboardDeltaY(sourceView: textField, targetView: self.view, keyboardFrame: keyboardFrame, padding: 8)
+        if self.view.frame.origin.y == 0 && deltaY > 0 {
+            self.view.frame.origin.y -= deltaY
+        }
+    }
+    
+    @objc private func keyboardWillDismiss(_ notification: Notification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     /// Authenticate with passed username and log in
