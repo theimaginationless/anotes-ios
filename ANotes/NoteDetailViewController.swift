@@ -80,6 +80,8 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
         self.oldInset = self.contentTextView.contentInset
     }
     
+    
+    
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
