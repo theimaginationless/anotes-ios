@@ -11,7 +11,7 @@ class NoteDataSource: NSObject, UITableViewDataSource {
     var notes = [Note]()
     var searchMode: Bool {
         get {
-            self.searchNotes?.count ?? 0 > 0
+            return self.searchNotes != nil
         }
     }
     var searchNotes: [Note]?
