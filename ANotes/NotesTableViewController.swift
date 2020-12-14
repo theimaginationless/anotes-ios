@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate, UIPopoverPresentationControllerDelegate, ApplicationLockBiometricAuthenticationDelegate {
+class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate, UIPopoverPresentationControllerDelegate, ApplicationLockBiometricAuthenticationDelegate, UISearchResultsUpdating {
     var userDataSource = UserDataSource()
     var userStore: UserStore!
     var currentUser: User!
@@ -40,6 +40,11 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
         self.userDataSource.user = self.userStore.user
         self.currentUser.noteDataSource.noteStore = self.currentUser.noteStore
         self.tableView.dataSource = self.currentUser.noteDataSource
+        let searchController = UISearchController()
+        searchController.searchBar.placeholder = NSLocalizedString("Search...", comment: "Search bar place holder")
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        self.navigationItem.searchController = searchController
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,6 +74,20 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
         }
         else {
             self.lastRestoreDateLabel.date = nil
+        }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchRequest = searchController.searchBar.text {
+            if !searchRequest.isEmpty {
+                let result = self.currentUser.noteDataSource.notes.filter{$0.title.lowercased().contains(searchRequest.lowercased()) || $0.text.lowercased().contains(searchRequest.lowercased())}
+                self.currentUser.noteDataSource.searchNotes = result
+            }
+            else {
+                self.currentUser.noteDataSource.searchNotes = nil
+            }
+            
+            self.reloadData()
         }
     }
     
@@ -353,7 +372,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
             if let destination = segue.destination as? NoteDetailViewController {
                 if let cell = sender as? NoteTableViewCell,
                    let indexPath = self.tableView.indexPath(for: cell) {
-                    var note: Note!
+                    var note: Note?
                     if self.userDataSource.user.noteDataSource.numberOfSections(in: self.tableView) > 1 {
                         switch indexPath.section {
                         case 0:
@@ -363,6 +382,10 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
                         default:
                             note = nil
                         }
+                    }
+                    else if self.currentUser.noteDataSource.searchMode {
+                        note = self.currentUser.noteDataSource.searchNotes?[indexPath.row]
+                        self.currentUser.noteDataSource.searchNotes!.forEach{print("Is: \($0)")}
                     }
                     else {
                         note = self.currentUser.noteDataSource.notes[indexPath.row]

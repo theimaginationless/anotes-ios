@@ -9,6 +9,12 @@ import UIKit
 
 class NoteDataSource: NSObject, UITableViewDataSource {
     var notes = [Note]()
+    var searchMode: Bool {
+        get {
+            self.searchNotes?.count ?? 0 > 0
+        }
+    }
+    var searchNotes: [Note]?
     var lastRestoreDate: Date? {
         get {
             UserDefaults.standard.value(forKey: "LastRestoreDate") as? Date
@@ -40,6 +46,10 @@ class NoteDataSource: NSObject, UITableViewDataSource {
     var noteStore: NoteStore!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.searchMode {
+            return self.searchNotes?.count ?? 0
+        }
+        
         switch self.numberOfSections(in: tableView) {
         case 1:
             return self.notes.count
@@ -58,6 +68,10 @@ class NoteDataSource: NSObject, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if self.searchMode {
+            return 1
+        }
+        
         return self.notes.filter{$0.pinned}.count > 0 ? 2 : 1
     }
     
@@ -83,9 +97,10 @@ class NoteDataSource: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if self.notes.count == 1 {
+        if self.notes.count == 1 || self.searchMode {
             return false
         }
+        
         var deletableSectionItems = 0
         if self.numberOfSections(in: tableView) > 1 {
             deletableSectionItems = 1
@@ -130,22 +145,27 @@ class NoteDataSource: NSObject, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! NoteTableViewCell
         
         var note: Note
-        switch self.numberOfSections(in: tableView){
-        case 1:
-            note = notes[indexPath.row]
-        case 2:
-            let pinnedNotes = notes.filter{$0.pinned}
-            let otherNotes = notes.filter{!$0.pinned}
-            switch indexPath.section {
-            case 0:
-                note = pinnedNotes[indexPath.row]
+        if self.searchMode {
+            note = self.searchNotes![indexPath.row]
+        }
+        else {
+            switch self.numberOfSections(in: tableView){
             case 1:
-                note = otherNotes[indexPath.row]
+                note = notes[indexPath.row]
+            case 2:
+                let pinnedNotes = notes.filter{$0.pinned}
+                let otherNotes = notes.filter{!$0.pinned}
+                switch indexPath.section {
+                case 0:
+                    note = pinnedNotes[indexPath.row]
+                case 1:
+                    note = otherNotes[indexPath.row]
+                default:
+                    return cell
+                }
             default:
                 return cell
             }
-        default:
-            return cell
         }
         
         cell.titleLabel.text = note.title
