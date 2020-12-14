@@ -47,7 +47,7 @@ class NoteDataSource: NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.searchMode {
-            return self.searchNotes?.count ?? 0
+            return self.searchNotes!.count
         }
         
         switch self.numberOfSections(in: tableView) {
