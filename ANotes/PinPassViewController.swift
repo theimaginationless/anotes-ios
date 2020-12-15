@@ -53,7 +53,7 @@ class PinPassViewController: UIViewController {
             
             self.biometricButton.isEnabled = Utils.checkAvailableBiometryAuthentication(for: .deviceOwnerAuthenticationWithBiometrics)
             let authContext = LAContext()
-            let defaultBiometricSymbolConfig = self.biometricButton.currentImage!.symbolConfiguration
+            let defaultBiometricSymbolConfig = self.biometricButton.currentImage?.symbolConfiguration
             switch authContext.biometryType {
             case .faceID:
                 if let symbolConfiguration = defaultBiometricSymbolConfig,
