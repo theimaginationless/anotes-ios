@@ -14,12 +14,21 @@ import LocalAuthentication
     @objc optional func completionIfSuccess(vc: UIViewController?)
 }
 
+enum BiometricIcon: String {
+    case FaceID = "faceid"
+    case TouchID = "touchid"
+    
+    func image(withConfiguration configuration: UIImage.SymbolConfiguration) -> UIImage? {
+        return UIImage(systemName: self.rawValue, withConfiguration: configuration)
+    }
+}
+
 class PinPassViewController: UIViewController {
     var delegate: ApplicationLockBiometricAuthenticationDelegate?
     var userStore: UserStore!
     @IBOutlet weak var pinTextField: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var faceIDButton: UIButton!
+    @IBOutlet weak var biometricButton: UIButton!
     var animationSpeed: TimeInterval! = 0.2
     private var passcodeComplete: Bool {
         get {
@@ -34,15 +43,31 @@ class PinPassViewController: UIViewController {
         super.viewWillAppear(animated)
         
         if self.setUp {
-            self.faceIDButton.alpha = .zero
+            self.biometricButton.alpha = .zero
         }
         else {
             guard #available(iOS 8.0, *) else {
-                self.faceIDButton.alpha = .zero
+                self.biometricButton.alpha = .zero
                 return
             }
             
-            self.faceIDButton.isEnabled = Utils.checkAvailableBiometryAuthentication(for: .deviceOwnerAuthenticationWithBiometrics)
+            self.biometricButton.isEnabled = Utils.checkAvailableBiometryAuthentication(for: .deviceOwnerAuthenticationWithBiometrics)
+            let authContext = LAContext()
+            let defaultBiometricSymbolConfig = self.biometricButton.currentImage!.symbolConfiguration
+            switch authContext.biometryType {
+            case .faceID:
+                if let symbolConfiguration = defaultBiometricSymbolConfig,
+                    let faceIdImage = BiometricIcon.FaceID.image(withConfiguration: symbolConfiguration) {
+                    self.biometricButton.setImage(faceIdImage, for: .normal)
+                }
+            case .touchID:
+                if let symbolConfiguration = defaultBiometricSymbolConfig,
+                    let touchIdImage = BiometricIcon.TouchID.image(withConfiguration: symbolConfiguration) {
+                    self.biometricButton.setImage(touchIdImage, for: .normal)
+                }
+            default:
+                break
+            }
         }
     }
     
