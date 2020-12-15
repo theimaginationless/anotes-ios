@@ -80,8 +80,6 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
         self.oldInset = self.contentTextView.contentInset
     }
     
-    
-    
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
@@ -108,8 +106,8 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func contentChanged(_ textField: UITextField) {
+        self.note.text = textField.text!
         if !textField.text!.isEmpty {
-            self.note.text = textField.text!
             self.note.backedUp = false
             self.isEdited = true
         }
@@ -122,8 +120,8 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func titleChanged(_ textField: UITextField) {
+        self.note.title = textField.text!
         if !textField.text!.isEmpty {
-            self.note.title = textField.text!
             self.note.backedUp = false
             self.isEdited = true
         }
