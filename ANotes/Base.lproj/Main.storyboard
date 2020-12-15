@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="WAA-Dd-wSn">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="WAA-Dd-wSn">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -41,20 +41,20 @@
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoteTableViewCell" rowHeight="110" id="f7M-Hd-9ZJ" customClass="NoteTableViewCell" customModule="ANotes" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="414" height="110"/>
+                                <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="110"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f7M-Hd-9ZJ" id="AfZ-cm-3AH">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chd-id-4bd">
-                                            <rect key="frame" x="20" y="8" width="86.5" height="26.5"/>
+                                            <rect key="frame" x="20" y="8.0000000000000018" width="86.666666666666671" height="26.666666666666671"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LWA-wO-2E3">
-                                            <rect key="frame" x="20" y="44.5" width="374" height="21"/>
+                                            <rect key="frame" x="20" y="44.666666666666664" width="374" height="20.999999999999993"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -64,7 +64,7 @@
                                             <state key="normal" image="alarm.fill" catalog="system"/>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wednesday at 10:15" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Db8-hV-xHa">
-                                            <rect key="frame" x="251.5" y="80.5" width="113.5" height="15"/>
+                                            <rect key="frame" x="251.66666666666666" y="80.666666666666671" width="113.33333333333334" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -167,7 +167,7 @@
                                 <rect key="frame" x="8" y="151" width="398" height="577"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="577" id="naD-UG-bMn"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="naD-UG-bMn"/>
                                 </constraints>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -180,7 +180,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="341" height="60"/>
                                     </datePicker>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="9bq-oX-yxV">
-                                        <rect key="frame" x="349" y="14.5" width="51" height="31"/>
+                                        <rect key="frame" x="349" y="14.666666666666629" width="51" height="31"/>
                                         <connections>
                                             <action selector="reminderAction:" destination="Vb6-pR-5wL" eventType="valueChanged" id="VzR-MK-27C"/>
                                         </connections>
@@ -201,7 +201,7 @@
                         <viewLayoutGuide key="safeArea" id="kWt-Hc-oLs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="kWt-Hc-oLs" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BIc-D1-gGW" secondAttribute="bottom" constant="8" id="0Io-G1-qSK"/>
+                            <constraint firstItem="kWt-Hc-oLs" firstAttribute="bottom" secondItem="BIc-D1-gGW" secondAttribute="bottom" constant="8" id="0Io-G1-qSK"/>
                             <constraint firstItem="4JK-As-o17" firstAttribute="trailing" secondItem="REl-jV-ce1" secondAttribute="trailing" id="1ft-s3-gmn"/>
                             <constraint firstItem="kWt-Hc-oLs" firstAttribute="trailing" secondItem="REl-jV-ce1" secondAttribute="trailing" constant="8" id="2je-LA-jJT"/>
                             <constraint firstItem="4JK-As-o17" firstAttribute="leading" secondItem="Sip-d2-eoE" secondAttribute="leading" id="4iu-D0-CHr"/>
