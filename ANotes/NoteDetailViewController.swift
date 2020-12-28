@@ -45,7 +45,7 @@ class NoteDetailViewController: UIViewController, UITextViewDelegate {
         if self.isEdited {
             self.note.editDate = Date()
             self.delegate.notifyReloadData()
-            try? self.noteStore.coreDataStack.saveChanges()
+            self.noteStore.coreDataStack.saveChanges()
         }
         
         NotificationCenter.default.removeObserver(self)

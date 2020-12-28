@@ -14,10 +14,12 @@ class CoreDataStack {
         let modelURL = Bundle.main.url(forResource: managedObjectModelName, withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
+    
     private var applicationDocumentsDirectory: URL {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls.first!
     }
+    
     private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         var coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let pathComponent = "\(self.managedObjectModelName).sqlite"
@@ -25,10 +27,18 @@ class CoreDataStack {
         let store = try! coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         return coordinator
     }()
+    
     lazy var mainQueueContext: NSManagedObjectContext = {
         let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        moc.persistentStoreCoordinator = self.persistentStoreCoordinator
         moc.name = "Main Queue Context (UI Context)"
+        moc.parent = self.privateWriterContext
+        return moc
+    }()
+    
+    lazy var privateWriterContext: NSManagedObjectContext = {
+        let moc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        moc.name = "Private Queue Context (Writer Context)"
+        moc.persistentStoreCoordinator = self.persistentStoreCoordinator
         return moc
     }()
     
@@ -37,22 +47,26 @@ class CoreDataStack {
     }
     
     /// Save persistence changes
-    /// - Throws: Error what indicating cause
-    func saveChanges() throws {
-        var error: Error?
-        mainQueueContext.performAndWait {
-            if self.mainQueueContext.hasChanges {
-                do {
+    func saveChanges() {
+        self.mainQueueContext.performAndWait {
+            do {
+                if self.mainQueueContext.hasChanges {
                     try self.mainQueueContext.save()
                 }
-                catch let saveError {
-                    error = saveError
-                }
+            }
+            catch let localError {
+                print("Error saving \(self.mainQueueContext.name!) context:\n\(localError)")
             }
         }
         
-        if let error = error {
-            throw error
+        self.privateWriterContext.perform {
+            do {
+                if self.privateWriterContext.hasChanges {
+                    try self.privateWriterContext.save()
+                }
+            } catch let localError {
+                print("Error saving \(self.privateWriterContext.name!) context:\n\(localError)")
+            }
         }
     }
 }

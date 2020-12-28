@@ -11,21 +11,17 @@ import CoreData
 class NoteStore {
     var allNotes = [Note]()
     let coreDataStack = CoreDataStack(modelName: "AnotesModel")
+    let batchSize = 10
     
     private func processingRestoredNotesData(data: Data?) -> AnotesResult {
         guard let jsonData = data else {
             return .Failure(AnotesError.EmptyJSONData)
         }
         
-        var result = AnotesApi.notesFrom(data: jsonData, inContext: self.coreDataStack.mainQueueContext)
+        let result = AnotesApi.notesFrom(data: jsonData, inContext: self.coreDataStack.mainQueueContext)
         
         if case .RestoreSuccess(_) = result {
-            do {
-                try self.coreDataStack.saveChanges()
-            }
-            catch let error {
-                result = .Failure(error)
-            }
+            self.coreDataStack.saveChanges()
         }
                 
         return result
@@ -73,7 +69,7 @@ class NoteStore {
                     mainQueueContext.delete(managedObjectData)
                 }
                 
-                try self?.coreDataStack.saveChanges()
+                self?.coreDataStack.saveChanges()
             }
             catch let error {
                 print("Remove object error! \(error)")
@@ -86,6 +82,7 @@ class NoteStore {
         fetchRequest.sortDescriptors = sortDescriptors
         fetchRequest.predicate = predicate
         fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.fetchBatchSize = self.batchSize
         let mainQueueContext = self.coreDataStack.mainQueueContext
         var mainQueueNotes: [Note]?
         var fetchRequestError: Error?
@@ -123,12 +120,8 @@ class NoteStore {
         mainQueueContext.performAndWait {
             [weak self] in
             mainQueueContext.delete(note)
-            do {
-                try self?.coreDataStack.saveChanges()
-            }
-            catch let error {
-                print("Error while remove object: '\(note)' from persistente with error: \(error)")
-            }
+            self?.coreDataStack.saveChanges()
+            
             print("Entity has been removed from persistence store!")
         }
     }

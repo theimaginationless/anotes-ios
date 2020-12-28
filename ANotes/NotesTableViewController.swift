@@ -41,7 +41,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
         self.currentUser.noteDataSource.noteStore = self.currentUser.noteStore
         self.tableView.dataSource = self.currentUser.noteDataSource
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = NSLocalizedString("Search...", comment: "Search bar place holder")
+        searchController.searchBar.placeholder = NSLocalizedString("Search...", comment: "Search bar placeholder")
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         self.navigationItem.searchController = searchController
@@ -151,12 +151,8 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
                         self.currentUser.noteDataSource.notes = notesArray
                         self.currentUser.noteDataSource.lastRestoreDate = Date()
                         self.notifyReloadData()
-                        do {
-                            try self.currentUser.noteStore.coreDataStack.saveChanges()
-                        }
-                        catch let error {
-                            print("Error while saving: \(error)")
-                        }
+                        self.currentUser.noteStore.coreDataStack.saveChanges()
+                        
                         if let safeSuccessCompletion = successCompletion {
                             safeSuccessCompletion()
                         }
@@ -210,12 +206,8 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
                         self.updateLastBackupDate(date: self.currentUser.noteDataSource.lastBackupDate)
                         indices.forEach{allNotes[$0].backedUp = true}
                         self.notifyReloadData()
-                        do {
-                            try self.currentUser.noteStore.coreDataStack.saveChanges()
-                        }
-                        catch let error {
-                            print("Error while saving: \(error)")
-                        }
+                        self.currentUser.noteStore.coreDataStack.saveChanges()
+                        
                         if let safeSuccessCompletion = successCompletion {
                             safeSuccessCompletion()
                         }
@@ -385,7 +377,6 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
                     }
                     else if self.currentUser.noteDataSource.searchMode {
                         note = self.currentUser.noteDataSource.searchNotes?[indexPath.row]
-                        self.currentUser.noteDataSource.searchNotes!.forEach{print("Is: \($0)")}
                     }
                     else {
                         note = self.currentUser.noteDataSource.notes[indexPath.row]
