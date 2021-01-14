@@ -38,10 +38,15 @@ class User: Equatable {
         return lhs.username == rhs.username
     }
     
-    init(username: String, password: String, fullname: String, authToken: String) {
+    init(username: String, password: String, fullname: String? = nil, authToken: String) {
         self.username = username
         self.password = password
-        self.fullname = fullname
+        if let fullnameUnwrap = fullname {
+            self.fullname = fullnameUnwrap
+        }
+        else {
+            self.fullname = UserDefaults.standard.string(forKey: "fullname")
+        }
         self.authToken = authToken
         self.noteDataSource = NoteDataSource()
         self.noteStore = NoteStore()
@@ -50,24 +55,29 @@ class User: Equatable {
     /// Save user session
     /// - Parameter user: user for save
     class func saveSession(for user: User) {
-        // TODO: Move secure-sensitive data to keychain
-        UserDefaults.standard.setValue(user.username, forKey: "username")
-        UserDefaults.standard.setValue(user.password, forKey: "password")
         UserDefaults.standard.setValue(user.fullname, forKey: "fullname")
-        UserDefaults.standard.setValue(user.authToken, forKey: "authToken")
         UserDefaults.standard.synchronize()
+        do {
+            try KeychainUtils.saveCredentials(for: user)
+        }
+        catch let error {
+            print("Cannot save credentials into keychain for user \(String(describing: user.username)) with error: \(error)")
+        }
     }
     
     /// Reset last session
     class func resetSession() {
-        UserDefaults.standard.removeObject(forKey: "username")
-        UserDefaults.standard.removeObject(forKey: "password")
         UserDefaults.standard.removeObject(forKey: "fullname")
-        UserDefaults.standard.removeObject(forKey: "authToken")
         UserDefaults.standard.removeObject(forKey: "LastBackupDate")
         UserDefaults.standard.removeObject(forKey: "LastRestoreDate")
         UserDefaults.standard.removeObject(forKey: "AlreadyUsing")
         UserDefaults.standard.synchronize()
+        do {
+            try KeychainUtils.resetCredentials()
+        }
+        catch let error {
+            print("Cannot reset session keychain: \(error)")
+        }
         self.appLocked = false
         self.passcode = nil
     }
@@ -76,15 +86,13 @@ class User: Equatable {
     /// - Returns: User instance of last saved session
     class func getLastSessionUser() -> User? {
         // TODO: Move secure-sensitive data to keychain
-        guard let username = UserDefaults.standard.string(forKey: "username"),
-           let fullname = UserDefaults.standard.string(forKey: "fullname"),
-           let password = UserDefaults.standard.string(forKey: "password"),
-           let authToken = UserDefaults.standard.string(forKey: "authToken") else {
-            
+        guard let fullname = UserDefaults.standard.string(forKey: "fullname") else {
             return nil
         }
         
-        let user = User(username: username, password: password, fullname: fullname, authToken: authToken)
+        let user = try? KeychainUtils.loadCredentials()
+        user?.fullname = fullname
+        print("Cridentials load successful!")
         return user
     }
 }

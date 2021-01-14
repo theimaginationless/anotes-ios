@@ -14,6 +14,7 @@
 		B282ED91256F89440066DFC1 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B282ED90256F89440066DFC1 /* CoreDataStack.swift */; };
 		B2E5E94F25646ABF00D485D7 /* AnotesModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2E5E94D25646ABF00D485D7 /* AnotesModel.xcdatamodeld */; };
 		B2F10F02257F6F82009F8953 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F10F01257F6F82009F8953 /* Utils.swift */; };
+		B2FB209425B001DD00B59946 /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FB209325B001DD00B59946 /* KeychainUtils.swift */; };
 		EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */; };
 		EB07E1362543F9C40047792B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1352543F9C40047792B /* AppDelegate.swift */; };
 		EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07E1372543F9C40047792B /* SceneDelegate.swift */; };
@@ -68,6 +69,7 @@
 		B282ED90256F89440066DFC1 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		B2E5E94E25646ABF00D485D7 /* AnotesModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AnotesModel.xcdatamodel; sourceTree = "<group>"; };
 		B2F10F01257F6F82009F8953 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		B2FB209325B001DD00B59946 /* KeychainUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtils.swift; sourceTree = "<group>"; };
 		EB0663382551B24E00EC36C5 /* NoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewController.swift; sourceTree = "<group>"; };
 		EB07E1322543F9C40047792B /* ANotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB07E1352543F9C40047792B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				EBD2A4BA254706E500A649C3 /* stores */,
 				EBD2A4832545A12F00A649C3 /* UIRoundedButton.swift */,
 				B2F10F01257F6F82009F8953 /* Utils.swift */,
+				B2FB209325B001DD00B59946 /* KeychainUtils.swift */,
 			);
 			path = ANotes;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				EB0D9143254B3DED000E7DA5 /* NoteTableViewCell.swift in Sources */,
 				EB07E1382543F9C40047792B /* SceneDelegate.swift in Sources */,
 				B2E5E94F25646ABF00D485D7 /* AnotesModel.xcdatamodeld in Sources */,
+				B2FB209425B001DD00B59946 /* KeychainUtils.swift in Sources */,
 				EB0663392551B24E00EC36C5 /* NoteDetailViewController.swift in Sources */,
 				EBD2A4BC254706F400A649C3 /* UserStore.swift in Sources */,
 				EB549942254ABB1000F411F4 /* ButtonLabelLocalized.swift in Sources */,
