@@ -22,15 +22,7 @@ class User: Equatable {
             UserDefaults.standard.bool(forKey: "AppLocked")
         }
     }
-    class var passcode: String? {
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: "passcode")
-            UserDefaults.standard.synchronize()
-        }
-        get {
-            UserDefaults.standard.string(forKey: "passcode")
-        }
-    }
+    var passcode: String?
     var noteDataSource: NoteDataSource!
     var noteStore: NoteStore!
     
@@ -50,6 +42,17 @@ class User: Equatable {
         self.authToken = authToken
         self.noteDataSource = NoteDataSource()
         self.noteStore = NoteStore()
+    }
+    
+    class func setupPasscode(passcode: String, for user: User) {
+        user.passcode = passcode
+        do {
+            try KeychainUtils.updateCredentials(for: user)
+            self.appLocked = true
+        }
+        catch let error {
+            print("Cannot setup passcode for user: \(user.username ?? "") with error: \(error)")
+        }
     }
     
     /// Save user session
@@ -79,13 +82,11 @@ class User: Equatable {
             print("Cannot reset session keychain: \(error)")
         }
         self.appLocked = false
-        self.passcode = nil
     }
     
     /// Get last session user
     /// - Returns: User instance of last saved session
     class func getLastSessionUser() -> User? {
-        // TODO: Move secure-sensitive data to keychain
         guard let fullname = UserDefaults.standard.string(forKey: "fullname") else {
             return nil
         }

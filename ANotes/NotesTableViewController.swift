@@ -344,8 +344,7 @@ class NotesTableViewController: UITableViewController, NotifyReloadDataDelegate,
     }
     
     func setPasscode(passcode: String) {
-        User.passcode = passcode
-        User.appLocked = true
+        User.setupPasscode(passcode: passcode, for: self.currentUser)
     }
     
     func setSuccessedUnlock() {

@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
     }
     
     func setPasscode(passcode: String) {
-        User.passcode = passcode
+        self.userStore.user!.passcode = passcode
     }
     
     func completionIfSuccess(vc: UIViewController?) {
@@ -57,7 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, ApplicationLockBiometri
                     return
                 }
                 
-                pinPassVC.originPasscode = User.passcode
+                pinPassVC.originPasscode = user.passcode
                 pinPassVC.setUp = false
                 pinPassVC.userStore = self.userStore
                 pinPassVC.delegate = self
