@@ -82,7 +82,7 @@ struct AnotesApi {
         var request = URLRequest(url: url)
         request.httpMethod = requestType.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Tyoe")
-        headerParams?.forEach{request.addValue($0.key, forHTTPHeaderField: $0.value)}
+        headerParams?.forEach{request.addValue($0.value, forHTTPHeaderField: $0.key)}
                 
         if let jsonBody = jsonBody,
            let jsonBodyData = try? JSONSerialization.data(withJSONObject: jsonBody, options: []) {
